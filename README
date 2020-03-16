@@ -1,0 +1,39 @@
+This README file contains information on the contents of the meta-bolt layer.
+
+Please see the corresponding sections below for details.
+
+Dependencies
+============
+
+  URI:
+  branch: warrior
+
+  URI:
+  branch: master
+
+Patches
+=======
+
+Please submit any patches against the meta-bolt layer to the meta-bolt mailing list (hemanth@alifsemi.com)
+and cc: the maintainer:
+
+Maintainers:
+            Hemanth Kumar <hemanth@alifsemi.com>
+            Jagadeesh Krishnanjanappa <jagadeesh@alifsemi.com>
+
+Table of Contents
+=================
+
+  I. Adding the meta-bolt layer to your build
+ II. Misc
+
+
+I. Adding the meta-bolt layer to your build
+=================================================
+
+Run 'bitbake-layers add-layer meta-bolt'
+
+II. Misc
+========
+
+--- replace with specific information about the meta-bolt layer ---
