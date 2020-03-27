@@ -1,3 +1,3 @@
-PR .= ".1"
+PR .= ".2"
 
-SRCREV_bolt-tiny = "3a07e13fe8000e31068d91cd576daf7556267020"
+SRCREV_bolt-tiny = "CORSTONE-700-2020.02.10"

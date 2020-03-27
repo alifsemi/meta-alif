@@ -1,3 +1,3 @@
-PR .= ".1"
+PR .= ".2"
 
-SRCREV = "1a1adefe61c7ae6aacd51b0a009fc213669bfb09"
+SRCREV = "CORSTONE-700-2020.02.10"
