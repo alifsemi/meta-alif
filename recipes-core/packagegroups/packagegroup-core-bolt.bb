@@ -19,8 +19,11 @@ packagegroup-bolt-base \
 "
 
 RDEPENDS_packagegroup-bolt-base = " \
+packagegroup-core-boot \
 busybox-udhcpd \
+busybox-udhcpc \
 test-app \
+base-passwd \
 "
 
 RDEPENDS_packagegroup-bolt-graphics = " \

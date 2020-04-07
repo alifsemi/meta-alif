@@ -12,7 +12,7 @@ DEPENDS += "u-boot-mkimage-native"
 
 inherit core-image
 
-IMAGE_INSTALL_append += "packagegroup-core-bolt"
+IMAGE_INSTALL = "packagegroup-core-bolt"
 
 # Remove Partition table if wic image is generated
 do_cleanup_partition_table() {
