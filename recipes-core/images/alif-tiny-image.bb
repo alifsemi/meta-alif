@@ -38,3 +38,5 @@ do_image_make_ramfs_corstone700() {
 }
 
 addtask do_image_make_ramfs after do_image_cpio before do_image_wic
+do_image_wic[depends] += "${PN}:do_image_cramfs_xip"
+do_image[depends] += "boot-firmware:do_deploy trusted-firmware-a:do_deploy"
