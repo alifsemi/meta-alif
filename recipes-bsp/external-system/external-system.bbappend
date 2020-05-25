@@ -1,4 +1,4 @@
-PR .= ".3"
+PR .= ".4"
 
 FREERTOS ?= "1"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
@@ -14,3 +14,5 @@ do_deploy() {
 }
 
 addtask deploy before do_build after do_compile
+
+COMPATIBLE_MACHINE .= "|(bolt-fpga)"

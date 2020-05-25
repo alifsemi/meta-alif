@@ -1,4 +1,4 @@
-PR .= ".3"
+PR .= ".4"
 
 inherit deploy
 
@@ -14,3 +14,6 @@ do_deploy() {
 
 do_deploy[depends] += "trusted-firmware-a:do_deploy"
 addtask deploy before do_build after do_compile
+
+
+COMPATIBLE_MACHINE .= "|(bolt-fpga)"

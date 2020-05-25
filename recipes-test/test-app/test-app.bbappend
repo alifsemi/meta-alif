@@ -1,3 +1,5 @@
-PR .= ".2"
+PR .= ".3"
 
 SRCREV = "CORSTONE-700-2020.02.10"
+
+COMPATIBLE_MACHINE .= "|(bolt-fpga)"
