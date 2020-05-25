@@ -1,0 +1,45 @@
+From 60479c2ea7769bddf426f310dc7aaec02f4a4421 Mon Sep 17 00:00:00 2001
+From: Jagadeesh Krishnanjanappa <jagadeesh@alifsemi.com>
+Date: Mon, 25 May 2020 07:57:25 +0000
+Subject: [PATCH 1/2] Set Bolt FPGA generic timer frequency to 10Mhz
+
+Instead of reading REFCLK from memory mapped address at
+0x1A200000 + 0x20, just return 10Mhz.
+
+Signed-off-by: Jagadeesh Krishnanjanappa <jagadeesh@alifsemi.com>
+---
+ plat/arm/board/corstone700/corstone700_plat.c     | 6 ++++++
+ plat/arm/board/corstone700/include/platform_def.h | 3 +++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/plat/arm/board/corstone700/corstone700_plat.c b/plat/arm/board/corstone700/corstone700_plat.c
+index 74ce735f0..a7db90e4c 100644
+--- a/plat/arm/board/corstone700/corstone700_plat.c
++++ b/plat/arm/board/corstone700/corstone700_plat.c
+@@ -28,3 +28,9 @@ void __init plat_arm_pwrc_setup(void)
+ {
+ 	mhu_secure_init();
+ }
++
++/* Returns 10Mhz as timer base frequency */
++unsigned int plat_get_syscnt_freq2(void)
++{
++	return BOLT_FPGA_TIMER_BASE_FREQUENCY;
++}
+diff --git a/plat/arm/board/corstone700/include/platform_def.h b/plat/arm/board/corstone700/include/platform_def.h
+index 7b0c03b63..bc50bf765 100644
+--- a/plat/arm/board/corstone700/include/platform_def.h
++++ b/plat/arm/board/corstone700/include/platform_def.h
+@@ -19,6 +19,9 @@
+ 					CORSTONE700_MAX_CPUS_PER_CLUSTER *   \
+ 					CORSTONE700_MAX_PE_PER_CPU)
+ 
++/* Bolt FPGA Generic Timer Frequency */
++#define BOLT_FPGA_TIMER_BASE_FREQUENCY      10000000 /* 10Mhz */
++
+ #define PLAT_MAX_PWR_LVL		2
+ 
+ #define PLAT_ARM_TRUSTED_MAILBOX_BASE	ARM_TRUSTED_SRAM_BASE
+-- 
+2.23.1
+

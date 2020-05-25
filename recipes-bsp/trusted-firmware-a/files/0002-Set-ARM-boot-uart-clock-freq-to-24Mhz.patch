@@ -1,0 +1,31 @@
+From 502af77f05258018ccd13f4276c661978a2d1ab2 Mon Sep 17 00:00:00 2001
+From: Jagadeesh Krishnanjanappa <jagadeesh@alifsemi.com>
+Date: Mon, 25 May 2020 09:21:05 +0000
+Subject: [PATCH 2/2] Set ARM boot uart clock freq to 24Mhz
+
+This is a temporary fix to get Kernel boot messages
+at the console.
+
+Signed-off-by: Jagadeesh Krishnanjanappa <jagadeesh@alifsemi.com>
+---
+ include/plat/arm/board/common/v2m_def.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/plat/arm/board/common/v2m_def.h b/include/plat/arm/board/common/v2m_def.h
+index 841f17ff3..6a6979c9c 100644
+--- a/include/plat/arm/board/common/v2m_def.h
++++ b/include/plat/arm/board/common/v2m_def.h
+@@ -82,8 +82,8 @@
+ #define V2M_IOFPGA_UART2_BASE		UL(0x1c0b0000)
+ #define V2M_IOFPGA_UART3_BASE		UL(0x1c0c0000)
+ 
+-#define V2M_IOFPGA_UART0_CLK_IN_HZ	32000000
+-#define V2M_IOFPGA_UART1_CLK_IN_HZ	32000000
++#define V2M_IOFPGA_UART0_CLK_IN_HZ	24000000
++#define V2M_IOFPGA_UART1_CLK_IN_HZ	24000000
+ #define V2M_IOFPGA_UART2_CLK_IN_HZ	24000000
+ #define V2M_IOFPGA_UART3_CLK_IN_HZ	24000000
+ 
+-- 
+2.23.1
+
