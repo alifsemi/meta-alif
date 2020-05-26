@@ -1,4 +1,4 @@
-PR .= ".4"
+PR .= ".5"
 
 LIC_FILES_CHKSUM_bolt-fpga = "file://license.rst;md5=c709b197e22b81ede21109dbffd5f363"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files/:"
@@ -18,8 +18,8 @@ do_compile_prepend () {
 do_install[noexec] = "1"
 
 do_deploy() {
-       [ -f ${B}/${TF-A_PLATFORM}/bl1.bin ] && install -D -p -m 0644 ${B}/${TF-A_PLATFORM}/bl1.bin ${DEPLOYDIR}/bl1.bin
-       [ -f ${B}/${TF-A_PLATFORM}/bl1/bl1.elf ] && install -D -p -m 0644 ${B}/${TF-A_PLATFORM}/bl1/bl1.elf ${DEPLOYDIR}/bl1.elf
+       [ -f ${B}/${TF-A_PLATFORM}/bl32.bin ] && install -D -p -m 0644 ${B}/${TF-A_PLATFORM}/bl32.bin ${DEPLOYDIR}/bl32.bin
+       [ -f ${B}/${TF-A_PLATFORM}/fdts/corstone700.dtb ] && install -D -p -m 0644 ${B}/${TF-A_PLATFORM}/fdts/corstone700.dtb ${DEPLOYDIR}/corstone700.dtb
        install -D -p -m 0644 ${B}/${TF-A_PLATFORM}/fip.bin ${DEPLOYDIR}/${TF-A_PLATFORM}.fip
 }
 
