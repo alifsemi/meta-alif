@@ -86,6 +86,10 @@ struct rpmsg_endpoint_info
 #define RPMSG_DESTROY_EPT_IOCTL _IO(0xb5, 0x2)
 
 #define EXTSYS_CPU_WAIT_DISABLE 0x0
+#define EXTSYS_RST_REQ_ENABLE   0x1
+#define EXTSYS_RST_REQ_DISABLE  0x3
+#define EXTSYS_RST_ST           0x4
+#define EXTSYS_RST_CTRL         0x5
 
 /* MHU test command encoding */
 #define BITMASK(x) ((unsigned)-1 >> ((sizeof(int) * CHAR_BIT) - x))
@@ -97,12 +101,40 @@ struct rpmsg_endpoint_info
 /* Desassert the reset signal of the external system#0 harness */
 int es_reset_test()
 {
-	int status;
+	int status = -1;
 	/* Bring external system out of reset */
 	TRY_OPEN(fd_sdk, "/dev/extsys_ctrl", O_RDWR);
-	TRY_IOCTL(status, fd_sdk, EXTSYS_CPU_WAIT_DISABLE, 0);
+	ioctl(fd_sdk, EXTSYS_RST_REQ_ENABLE);
+	usleep(100);
+	status = ioctl(fd_sdk, EXTSYS_RST_ST);
+	if((status & 0x7) == 0x4) {
+		ioctl(fd_sdk, EXTSYS_RST_REQ_DISABLE);
+		usleep(100);
+		status = ioctl(fd_sdk, EXTSYS_RST_ST);
+		if((status & 0x7) != 0x0) {
+			printf("Reset request has been DECLINED \n");
+			status = -1;
+		}
+		else {
+			printf("Reset request has been accepted.\n");
+			TRY_IOCTL(status, fd_sdk, EXTSYS_CPU_WAIT_DISABLE, 0x0);
+			printf("External System 0 reset done.\n");
+			status = 0;
+		}
+	}
+	else {
+		printf("Reset request has been DECLINED.\n");
+		ioctl(fd_sdk, EXTSYS_RST_REQ_DISABLE);
+		usleep(100);
+		status = ioctl(fd_sdk, EXTSYS_RST_ST);
+		if((status & 0x7) != 0x0) {
+			printf("Reset request has been DECLINED again \n");
+			printf("Not resetting External System 0\n");
+			status = -1;
+		}
+	}
 	TRY_CLOSE(fd_sdk);
-	return 0;
+	return status;
 }
 
 /* Test MHU connection between HOST <=> ES0 MHU 1 */
