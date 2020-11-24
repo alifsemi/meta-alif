@@ -16,6 +16,7 @@ SUMMARY_packagegroup-bolt-graphics = "Bolt system - Base + Graphics packages"
 
 RDEPENDS_${PN} = " \
 packagegroup-bolt-base \
+packagegroup-bolt-graphics \
 "
 
 RDEPENDS_packagegroup-bolt-base = " \
@@ -27,5 +28,15 @@ base-passwd \
 "
 
 RDEPENDS_packagegroup-bolt-graphics = " \
-packagegroup-bolt-base \
+	libdrm \
+	libdrm-tests \
+	devmem2 \
+	e2fsprogs-resize2fs \
+	rsync \
+	haveged \
+	smartwatch-demo \
+	cdc-mod \
+	d2d-mod \
 "
+
+MACHINE_EXTRA_RDEPENDS += "kernel-module-cdc kernel-module-d2d"
