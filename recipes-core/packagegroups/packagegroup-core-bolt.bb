@@ -39,4 +39,6 @@ RDEPENDS_packagegroup-bolt-graphics = " \
 	smartwatch-demo \
 	cdc-mod \
 	d2d-mod \
+	kmod \
+	fbset \
 "
