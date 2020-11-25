@@ -1,0 +1,13 @@
+# Partition for corstone700
+part --source rawcopy --sourceparams="file=spitoc.bin" --no-table --align 1 --fixed-size 1k
+
+part --source rawcopy --sourceparams="file=se_ramfw.bin" --no-table --align 1 --fixed-size 32k
+
+# Rawcopy of the FIP binary
+part --source rawcopy --sourceparams="file=bolt_fpga.fip" --no-table --align 1 --fixed-size 991k
+
+# Rawcopy of the rootfs
+part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/alif-graphics-image-bolt-fpga.cramfs-xip" --no-table --fixed-size 10
+
+# Rawcopy of the kernel binary
+part --source rawcopy --sourceparams="file=xipImage" --no-table --fixed-size 4
