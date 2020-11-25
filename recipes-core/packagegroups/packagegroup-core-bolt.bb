@@ -16,8 +16,10 @@ SUMMARY_packagegroup-bolt-graphics = "Bolt system - Base + Graphics packages"
 
 RDEPENDS_${PN} = " \
 packagegroup-bolt-base \
-packagegroup-bolt-graphics \
 "
+# Let core boot packagegroup does bot contain graphics packages
+#${@bb.utils.contains('DISTRO_FEATURES', 'bolt-graphics', 'packagegroup-bolt-graphics', '', d)} \
+#"
 
 RDEPENDS_packagegroup-bolt-base = " \
 packagegroup-core-boot \
@@ -38,5 +40,3 @@ RDEPENDS_packagegroup-bolt-graphics = " \
 	cdc-mod \
 	d2d-mod \
 "
-
-MACHINE_EXTRA_RDEPENDS += "kernel-module-cdc kernel-module-d2d"
