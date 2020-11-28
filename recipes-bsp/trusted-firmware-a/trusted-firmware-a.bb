@@ -5,7 +5,7 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://license.rst;md5=c709b197e22b81ede21109dbffd5f363"
 DEPENDS += " dtc-native coreutils-native"
 DEPENDS += " ${TF-A_DEPENDS} "
-PR = "r7"
+PR = "r8"
 
 SRC_URI = "git://10.10.10.22/arm-tf.git;protocol=http;branch=bolt-fpga"
 SRCREV = "${AUTOREV}"
@@ -49,6 +49,7 @@ do_install() {
         install -D -p -m 0644 ${B}/${TF-A_PLATFORM}/fip.bin ${D}/${TF-A_PLATFORM}.fip
 }
 
+do_package[noexec] = "1"
 
 do_deploy() {
        [ -f ${D}/bl32.bin ] && install -D -p -m 0644 ${D}/bl32.bin ${DEPLOYDIR}/bl32.bin
