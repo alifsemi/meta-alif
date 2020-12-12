@@ -7,4 +7,4 @@ part --source rawcopy --sourceparams="file=bolt_fpga.fip" --no-table --align 1 -
 part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/alif-graphics-image-bolt-fpga.cramfs-xip" --no-table --fixed-size 10
 
 # Rawcopy of the kernel binary
-part --source rawcopy --sourceparams="file=xipImage" --no-table --fixed-size 4
+part --source rawcopy --sourceparams="file=xipImage" --no-table --fixed-size 8
