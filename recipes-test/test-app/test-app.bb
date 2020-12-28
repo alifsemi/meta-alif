@@ -3,7 +3,7 @@ DESCRIPTION = "CORSTONE700 Host Test App"
 LICENSE="BSD"
 LIC_FILES_CHKSUM = "file://license.md;md5=e44b2531cd6ffe9dece394dbe988d9a0"
 DEPENDS += " coreutils-native "
-PR = "r4"
+PR = "r5"
 
 SRC_URI = "git://${USER}@git.linaro.org/landing-teams/working/arm/test-apps.git;protocol=https;branch=master \
            file://test-app_es0_mhu0.c \

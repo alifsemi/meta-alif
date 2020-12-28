@@ -31,7 +31,7 @@ struct rpmsg_endpoint_info
 #define RPMSG_DESTROY_EPT_IOCTL _IO(0xb5, 0x2)
 
 
-struct rpmsg_endpoint_info semhu0_eptinfo = {"semhu0", 0XFFFFFFFF, 0xFFFFFFFF};
+struct rpmsg_endpoint_info semhu0_eptinfo = {"se_mhu0", 0XFFFFFFFF, 0xFFFFFFFF};
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 int fd_semhu0_ept;
 

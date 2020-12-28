@@ -31,9 +31,9 @@ struct rpmsg_endpoint_info
 #define RPMSG_DESTROY_EPT_IOCTL _IO(0xb5, 0x2)
 
 
-struct rpmsg_endpoint_info es0mhu1_eptinfo = {"es0mhu1", 0XFFFFFFFF, 0xFFFFFFFF};
+struct rpmsg_endpoint_info m55_hp_mhu1_eptinfo = {"m55_hp_mhu1", 0XFFFFFFFF, 0xFFFFFFFF};
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
-int fd_es0mhu1_ept;
+int fd_m55_hp_mhu1_ept;
 
 extern int errno;
 
@@ -51,14 +51,14 @@ int main()
 	     return -1;
      }
 
-     status = ioctl(fd, RPMSG_CREATE_EPT_IOCTL, &es0mhu1_eptinfo);
+     status = ioctl(fd, RPMSG_CREATE_EPT_IOCTL, &m55_hp_mhu1_eptinfo);
      if (status == -1) {
          printf("SEND IOCTL error status = 0x%x \n", status);
          return -1;
      }
 
     /* Create Endpoint to receive/send MHU data */
-    fd_es0mhu1_ept = open("/dev/rpmsg1", O_RDWR);// | O_NONBLOCK);
+    fd_m55_hp_mhu1_ept = open("/dev/rpmsg1", O_RDWR);// | O_NONBLOCK);
 
     /* Create independent threads each of which will execute function */
      iret1 = pthread_create( &thread1, NULL, print_message_function_send, (void*) message1);
@@ -92,7 +92,7 @@ void * print_message_function_send( void *ptr )
 
 	/* Lock, Write/send, unlock */
 	pthread_mutex_lock( &mutex1 );
-        status = write(fd_es0mhu1_ept, &data, sizeof(data));
+        status = write(fd_m55_hp_mhu1_ept, &data, sizeof(data));
 	if(status == -1) {
 	    printf("Unable send data\n");
 	}
@@ -120,13 +120,13 @@ void * print_message_function_receive( void *ptr )
 	/* Lock, receive/read, and unlock */
 	pthread_mutex_lock( &mutex1 );
         printf("RECV: Reading data ..... \n");
-	status = read(fd_es0mhu1_ept, &data, sizeof(data));
+	status = read(fd_m55_hp_mhu1_ept, &data, sizeof(data));
 	if (status == -1 && errno == EAGAIN) {
 		printf("No data available \n");
 	}
 
 	printf("RECV: First data is 0x%x \n", data);
-	status = read(fd_es0mhu1_ept, &data, sizeof(data));
+	status = read(fd_m55_hp_mhu1_ept, &data, sizeof(data));
 	if (status == -1 && errno == EAGAIN) {
 		printf("No data available \n");
 	}
