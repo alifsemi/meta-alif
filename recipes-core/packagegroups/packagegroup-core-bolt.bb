@@ -29,6 +29,11 @@ busybox-udhcpd \
 busybox-udhcpc \
 test-app \
 base-passwd \
+${@bb.utils.contains('DISTRO_FEATURES', 'bolt-sd', '${SD_PACKAGES}', '', d)} \
+"
+
+SD_PACKAGES = " util-linux-fdisk \
+		e2fsprogs-mke2fs \
 "
 
 GRAPHICS_PACKAGES = " \
