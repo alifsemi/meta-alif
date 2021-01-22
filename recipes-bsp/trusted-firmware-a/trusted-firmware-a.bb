@@ -7,7 +7,7 @@ DEPENDS += " dtc-native coreutils-native"
 DEPENDS += " ${TF-A_DEPENDS} "
 PR = "r10"
 
-SRC_URI = "git://10.10.10.22/arm-tf.git;protocol=http;branch=bolt-fpga"
+SRC_URI = "git://10.10.10.22/arm-tf.git;protocol=http;branch=bolt-rev-a0"
 SRCREV = "${AUTOREV}"
 
 TF-A_DEPENDS ?= ""
@@ -46,16 +46,16 @@ do_compile() {
 
 do_install() {
         [ -f ${B}/${TF-A_PLATFORM}/bl32.bin ] && cp -f ${B}/${TF-A_PLATFORM}/bl32.bin ${D}/bl32.bin
-        [ -f ${B}/${TF-A_PLATFORM}/fdts/bolt_fpga.dtb ] && cp -f ${B}/${TF-A_PLATFORM}/fdts/bolt_fpga.dtb ${D}/bolt_fpga.dtb
+        [ -f ${B}/${TF-A_PLATFORM}/fdts/${TF-A_PLATFORM}.dtb ] && cp -f ${B}/${TF-A_PLATFORM}/fdts/${TF-A_PLATFORM}.dtb ${D}/${TF-A_PLATFORM}.dtb
 }
 
 do_deploy() {
        [ -f ${D}/bl32.bin ] && install -D -p -m 0644 ${D}/bl32.bin ${DEPLOYDIR}/bl32.bin
-       [ -f ${D}/bolt_fpga.dtb ] && install -D -p -m 0644 ${D}/bolt_fpga.dtb ${DEPLOYDIR}/bolt_fpga.dtb
+       [ -f ${D}/${TF-A_PLATFORM}.dtb ] && install -D -p -m 0644 ${D}/${TF-A_PLATFORM}.dtb ${DEPLOYDIR}/${TF-A_PLATFORM}.dtb
 }
 
 addtask deploy before do_build after do_install
 
-FILES_${PN} = "/bl32.bin /bolt_fpga.dtb"
+FILES_${PN} = "/bl32.bin /${TF-A_PLATFORM}.dtb"
 
 COMPATIBLE_MACHINE = "(bolt-rev-a0)"
