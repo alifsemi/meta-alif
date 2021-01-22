@@ -44,4 +44,4 @@ do_install() {
     install -m 0755 ${B}/pthread_se_mhu1_inloop ${D}${bindir}/pthread_se_mhu1_inloop
 }
 
-COMPATIBLE_MACHINE = "(bolt-fpga)"
+COMPATIBLE_MACHINE = "(bolt-rev-a0)"

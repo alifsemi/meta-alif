@@ -25,4 +25,4 @@ S = "${WORKDIR}/git"
 #do_kernel_configme() {
 #}
 
-COMPATIBLE_MACHINE = "corstone700|bolt-fpga"
+COMPATIBLE_MACHINE = "bolt-rev-a0"

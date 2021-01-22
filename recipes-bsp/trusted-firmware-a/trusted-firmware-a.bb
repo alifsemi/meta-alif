@@ -58,4 +58,4 @@ addtask deploy before do_build after do_install
 
 FILES_${PN} = "/bl32.bin /bolt_fpga.dtb"
 
-COMPATIBLE_MACHINE = "(bolt-fpga)"
+COMPATIBLE_MACHINE = "(bolt-rev-a0)"
