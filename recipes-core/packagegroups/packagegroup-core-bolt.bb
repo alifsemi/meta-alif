@@ -27,7 +27,7 @@ RDEPENDS_packagegroup-core-bolt-base = " \
 packagegroup-core-boot \
 busybox-udhcpd \
 busybox-udhcpc \
-test-app \
+a32-linux-dd-testcases \
 base-passwd \
 ${@bb.utils.contains('DISTRO_FEATURES', 'bolt-sd', '${SD_PACKAGES}', '', d)} \
 "
