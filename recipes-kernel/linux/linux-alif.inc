@@ -1,6 +1,7 @@
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-graphics", "file://graphics.cfg", "" ,d)}"
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-nfs", "file://nfs.cfg", "" ,d)}"
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-sd", "file://sd.cfg", "" ,d)}"
+SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-hwsem", "file://hwsem.cfg", "" ,d)}"
 
 
 do_compile_prepend () {
