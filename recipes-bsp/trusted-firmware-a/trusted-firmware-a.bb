@@ -5,7 +5,7 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://license.rst;md5=c709b197e22b81ede21109dbffd5f363"
 DEPENDS += " dtc-native coreutils-native"
 DEPENDS += " ${TF-A_DEPENDS} "
-PR = "r10"
+PR = "r11"
 
 SRC_URI = "git://10.10.10.22/arm-tf.git;protocol=http;branch=bolt-rev-a0"
 SRCREV = "${AUTOREV}"
@@ -30,6 +30,10 @@ inherit deploy
 do_compile() {
     rm -rf ${B}
     mkdir -p ${B}
+
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'bolt-hwsem', 'true', 'false', d)}; then
+        cp ${S}/fdts/hwsem.dts ${S}/fdts/${TF-A_PLATFORM}.dts
+    fi
 
     oe_runmake -C ${S} BUILD_BASE=${B} \
       BUILD_PLAT=${B}/${TF-A_PLATFORM}/ \
