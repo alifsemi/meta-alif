@@ -4,7 +4,7 @@ SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-sd", "file://sd
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-hwsem", "file://hwsem.cfg", "" ,d)}"
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-mhu", "file://mhuv2.cfg", "" ,d)}"
 
-PR .= ".0"
+PR .= ".1"
 
 do_compile_prepend () {
     if [ -e "${B}/.config" ]; then
