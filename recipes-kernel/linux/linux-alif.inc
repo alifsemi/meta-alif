@@ -4,7 +4,9 @@ SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-sd", "file://sd
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-hwsem", "file://hwsem.cfg", "" ,d)}"
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-mhu", "file://mhuv2.cfg", "" ,d)}"
 
-PR .= ".1"
+PR .= ".2"
+
+KERNEL_CC_append = " -DA32_HWSEM_MST_ID=${A32_HWSEM_MST_ID} "
 
 do_compile_prepend () {
     if [ -e "${B}/.config" ]; then
