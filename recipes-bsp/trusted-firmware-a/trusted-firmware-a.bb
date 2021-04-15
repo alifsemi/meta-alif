@@ -5,9 +5,13 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://license.rst;md5=c709b197e22b81ede21109dbffd5f363"
 DEPENDS += " dtc-native coreutils-native"
 DEPENDS += " ${TF-A_DEPENDS} "
-PR = "r12"
+PR = "r13"
 
-SRC_URI = "git://10.10.10.22/arm-tf.git;protocol=http;branch=bolt-rev-a0"
+TFA_BRANCH ?= "bolt-rev-a0"
+
+TFA_TREE = "git://10.10.10.22/arm-tf.git;protocol=http"
+
+SRC_URI = "${TFA_TREE};branch=${TFA_BRANCH}"
 SRCREV = "${AUTOREV}"
 
 TF-A_DEPENDS ?= ""
