@@ -1,14 +1,13 @@
 ALIF_KERNEL_BRANCH ?= "bolt-5.4.y"
 
-PR = "r6"
+PR = "r7"
 
 require recipes-kernel/linux/linux-yocto.inc
 require recipes-kernel/linux/linux-alif.inc
 
 ALIF_KERNEL_TREE ?= "git://10.10.10.22/linux.git;protocol=http"
 
-SRC_URI = "${ALIF_KERNEL_TREE};branch=${ALIF_KERNEL_BRANCH} \
-           file://defconfig"
+SRC_URI = "${ALIF_KERNEL_TREE};branch=${ALIF_KERNEL_BRANCH}"
 
 KCONFIG_MODE="--alldefconfig"
 SRCREV = "${ALIF_KERNEL_BRANCH}"
