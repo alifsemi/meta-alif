@@ -4,16 +4,18 @@ HOMEPAGE = "https://github.com/npitre/cramfs-tools"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=393a5ca445f6965873eca0259a17f833"
 
-SRC_URI = "git://github.com/npitre/cramfs-tools;protocol=https;nobranch=1"
+DEPENDS = "zlib-native"
 
+PR = "r1"
+SRC_URI = "git://github.com/npitre/cramfs-tools;protocol=https;nobranch=1"
 SRCREV = "23d032e6e0a973810c6aedf165441592641b60f4"
 
-BBCLASSEXTEND = "native"
+inherit autotools-brokensep
 
 S = "${WORKDIR}/git"
 
 do_compile () {
-      oe_runmake
+      oe_runmake CC="${CC} ${CFLAGS}"
 }
 
 do_install() {
@@ -21,3 +23,5 @@ do_install() {
     install ${S}/mkcramfs ${D}${bindir}
     install ${S}/cramfsck ${D}${bindir}
 }
+
+BBCLASSEXTEND = "native"
