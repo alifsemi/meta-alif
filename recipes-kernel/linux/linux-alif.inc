@@ -3,6 +3,7 @@ SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-nfs", "file://n
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-sd", "file://sd.cfg", "" ,d)}"
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-hwsem", "file://hwsem.cfg", "" ,d)}"
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-mhu", "file://mhuv2.cfg", "" ,d)}"
+SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-usb", "file://usb.cfg", "" ,d)}"
 
 PR .= ".2"
 
