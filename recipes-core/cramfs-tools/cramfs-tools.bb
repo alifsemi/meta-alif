@@ -4,9 +4,9 @@ HOMEPAGE = "https://github.com/npitre/cramfs-tools"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=393a5ca445f6965873eca0259a17f833"
 
-DEPENDS = "zlib-native"
+DEPENDS = "zlib"
 
-PR = "r1"
+PR = "r2"
 SRC_URI = "git://github.com/npitre/cramfs-tools;protocol=https;nobranch=1"
 SRCREV = "23d032e6e0a973810c6aedf165441592641b60f4"
 
@@ -24,4 +24,4 @@ do_install() {
     install ${S}/cramfsck ${D}${bindir}
 }
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
