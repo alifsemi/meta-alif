@@ -6,7 +6,7 @@ LICENSE="MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 PR = "r1"
 
-LINUX_DD_TC_BRANCH ?= "bolt-rev-a0"
+LINUX_DD_TC_BRANCH ?= "devkit-ex"
 
 LINUX_DD_TC_TREE ?= "git://10.10.10.22/a32_linux_DD_testcases.git;protocol=http"
 
@@ -27,4 +27,4 @@ do_install() {
 
 FILES_${PN} = "/opt/linux_dd_test/"
 
-COMPATIBLE_MACHINE = "(bolt-rev-a0)"
+COMPATIBLE_MACHINE = "(devkit-e).*"

@@ -1,21 +1,21 @@
-This README file contains information on the contents of the meta-bolt layer.
+This README file contains information on the contents of the meta-alif-ensemble layer.
 
 Please see the corresponding sections below for details.
 
 Dependencies
 ============
 
-  URI:
-  branch: warrior
+  URI: https://github.com/openembedded/openembedded.git
+  branch: zeus
 
-  URI:
-  branch: master
+  URI: https://github.com/openembedded/meta-openembedded.git
+  branch: zeus
 
 Patches
 =======
 
-Please submit any patches against the meta-bolt layer to the meta-bolt mailing list (hemanth@alifsemi.com)
-and cc: the maintainer:
+Please submit any patches against the meta-alif-ensemble layer to the
+following maintainers.
 
 Maintainers:
             Hemanth Kumar <hemanth@alifsemi.com>
@@ -24,16 +24,16 @@ Maintainers:
 Table of Contents
 =================
 
-  I. Adding the meta-bolt layer to your build
+  I. Adding the meta-alif-ensemble layer to your build
  II. Misc
 
 
-I. Adding the meta-bolt layer to your build
+I. Adding the meta-alif-ensemble layer to your build
 =================================================
 
-Run 'bitbake-layers add-layer meta-bolt'
+Run 'bitbake-layers add-layer meta-alif-ensemble'
 
 II. Misc
 ========
 
---- replace with specific information about the meta-bolt layer ---
+--- replace with specific information about the meta-alif-ensemble layer ---

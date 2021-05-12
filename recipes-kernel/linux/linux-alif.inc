@@ -1,12 +1,12 @@
-SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-graphics", "file://graphics.cfg", "" ,d)}"
-SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-nfs", "file://nfs.cfg", "" ,d)}"
-SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-sd", "file://sd.cfg", "" ,d)}"
-SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-hwsem", "file://hwsem.cfg", "" ,d)}"
-SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-mhu", "file://mhuv2.cfg", "" ,d)}"
-SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-usb", "file://usb.cfg", "" ,d)}"
-SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "bolt-spi", "file://spi.cfg", "" ,d)}"
+SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-graphics", "file://graphics.cfg", "" ,d)}"
+SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-nfs", "file://nfs.cfg", "" ,d)}"
+SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-sd", "file://sd.cfg", "" ,d)}"
+SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-hwsem", "file://hwsem.cfg", "" ,d)}"
+SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-mhu", "file://mhuv2.cfg", "" ,d)}"
+SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-usb", "file://usb.cfg", "" ,d)}"
+SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-spi", "file://spi.cfg", "" ,d)}"
 
-PR .= ".3"
+PR .= ".4"
 
 KERNEL_CC_append = " -DA32_HWSEM_MST_ID=${A32_HWSEM_MST_ID} "
 
