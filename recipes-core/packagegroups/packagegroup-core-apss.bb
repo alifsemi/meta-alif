@@ -29,11 +29,12 @@ busybox-udhcpd \
 busybox-udhcpc \
 a32-linux-dd-testcases \
 base-passwd \
-${@bb.utils.contains('DISTRO_FEATURES', 'apss-sd', '${SD_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-sd-boot', '${SD_PACKAGES}', '', d)} \
 "
 
 SD_PACKAGES = " util-linux-fdisk \
-		e2fsprogs-mke2fs \
+                e2fsprogs-mke2fs \
+                dosfstools \
 "
 
 GRAPHICS_PACKAGES = " \
