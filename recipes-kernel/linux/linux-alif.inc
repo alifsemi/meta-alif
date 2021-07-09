@@ -6,8 +6,9 @@ SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-hwsem", "file:/
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-mhu", "file://mhuv2.cfg", "" ,d)}"
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-usb", "file://usb.cfg", "" ,d)}"
 SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-spi", "file://spi.cfg", "" ,d)}"
+SRC_URI_append += "${@bb.utils.contains("DISTRO_FEATURES", "apss-ethernet", "file://ethernet.cfg", "" ,d)}"
 
-PR .= ".5"
+PR .= ".6"
 
 KERNEL_CC_append = " -DA32_HWSEM_MST_ID=${A32_HWSEM_MST_ID} "
 
