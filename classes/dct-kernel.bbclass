@@ -172,7 +172,7 @@ python do_dct_to_dts () {
     if bb.utils.contains('DISTRO_FEATURES', 'apss-ethernet', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("ETH_STATUS .*","ETH_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-spi', True, False, d):
-        ker_dts_macro_file_write.write_text(re.sub("SPI(.*)_STATUS .*", "SPI\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("SPI(.*)_STATUS .*", "SPI\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-uart', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("UART(.*)_STATUS .*", "UART\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-usb', True, False, d):
