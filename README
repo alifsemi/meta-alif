@@ -1,4 +1,4 @@
-This README file contains information on the contents of the meta-alif-ensemble layer.
+This README file contains information on the contents of the meta-alif layer.
 
 Please see the corresponding sections below for details.
 
@@ -14,7 +14,7 @@ Dependencies
 Patches
 =======
 
-Please submit any patches against the meta-alif-ensemble layer to the
+Please submit any patches against the meta-alif layer to the
 following maintainers.
 
 Maintainers:
@@ -24,16 +24,16 @@ Maintainers:
 Table of Contents
 =================
 
-  I. Adding the meta-alif-ensemble layer to your build
+  I. Adding the meta-alif layer to your build
  II. Misc
 
 
-I. Adding the meta-alif-ensemble layer to your build
+I. Adding the meta-alif layer to your build
 =================================================
 
-Run 'bitbake-layers add-layer meta-alif-ensemble'
+Run 'bitbake-layers add-layer meta-alif'
 
 II. Misc
 ========
 
---- replace with specific information about the meta-alif-ensemble layer ---
+--- replace with specific information about the meta-alif layer ---
