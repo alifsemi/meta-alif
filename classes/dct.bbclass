@@ -1,4 +1,4 @@
-def calculate_distro_features_from_dct(d):
+def calculate_distro_features_from_dct(d, res):
     import json
     from os import path
     json_file = d.getVar("DCT_JSON_FILE") or ""
@@ -7,6 +7,17 @@ def calculate_distro_features_from_dct(d):
         json_file_object = open(json_file, "r")
         json_dict = json.load(json_file_object)
         try:
+            mst_proc = json_dict["devices"]["device"]["resources"]["masters"]["processors"]
+            xip_load_addr = ""
+            for mst_proc_idx in range(len(mst_proc)):
+                if mst_proc[mst_proc_idx]["id"] == "A32":
+                    if mst_proc[mst_proc_idx]["configurables"]["bootAddress"][0]:
+                       xip_load_addr = mst_proc[mst_proc_idx]["configurables"]["bootAddress"][0]
+                    elif mst_proc[mst_proc_idx]["bootAddressDefault"]:
+                       xip_load_addr  = mst_proc[mst_proc_idx]["bootAddressDefault"]
+            if res == "masters":
+                json_file_object.close()
+                return xip_load_addr
             slv_ph = json_dict["devices"]["device"]["resources"]["slaves"]["peripherals"]
             for slv_ph_idx in range(len(slv_ph)):
                 for iter in range(len(slv_ph[slv_ph_idx]["modules"])):
@@ -157,5 +168,5 @@ def calculate_distro_features_from_dct(d):
         json_file_object.close()
     return " ".join(set(dct_distro_features.split()))
 
-
-DISTRO_FEATURES_append := " ${@calculate_distro_features_from_dct(d)}"
+DISTRO_FEATURES_append := " ${@calculate_distro_features_from_dct(d, res='slaves')}"
+XIP_KERNEL_LOAD_ADDR ?= "${@ '%s' %calculate_distro_features_from_dct(d, res='masters') if calculate_distro_features_from_dct(d, res='masters') else '0xE0000000'}"
