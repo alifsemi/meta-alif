@@ -7,7 +7,7 @@ DEPENDS += " dtc-native coreutils-native"
 DEPENDS += " ${TF-A_DEPENDS} "
 PR = "r14"
 
-TFA_BRANCH ?= "devkit-ex"
+TFA_BRANCH ?= "bolt-fpga"
 
 TFA_TREE ?= "git://10.10.10.22/arm-tf.git;protocol=http"
 
@@ -60,4 +60,4 @@ addtask deploy before do_build after do_install
 
 FILES_${PN} = "/bl32.bin"
 
-COMPATIBLE_MACHINE = "(devkit-e).*"
+COMPATIBLE_MACHINE = "(bolt.*fpga).*"

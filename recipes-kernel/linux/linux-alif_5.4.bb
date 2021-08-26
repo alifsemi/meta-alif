@@ -1,4 +1,4 @@
-ALIF_KERNEL_BRANCH ?= "devkit-ex-5.4.y"
+ALIF_KERNEL_BRANCH ?= "bolt-fpga-b0-5.4.y"
 
 PR = "r7"
 
@@ -25,4 +25,4 @@ S = "${WORKDIR}/git"
 #do_kernel_configme() {
 #}
 
-COMPATIBLE_MACHINE = "(devkit-e).*"
+COMPATIBLE_MACHINE = "(bolt.*fpga).*"
