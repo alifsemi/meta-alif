@@ -1,6 +1,6 @@
 SUMMARY = "Minimal boot requirements for the APSS"
 DESCRIPTION = "The set of packages required to boot the APSS"
-PR = "r1"
+PR = "r2"
 
 inherit packagegroup
 
@@ -54,8 +54,13 @@ GRAPHICS_PACKAGES = " \
 	fbset \
 "
 
+AV_PACKAGES = " \
+	alsa-utils \
+	alsa-lib \
+"
+
 RDEPENDS_packagegroup-core-apss-graphics = " \
-${@bb.utils.contains('DISTRO_FEATURES', 'apss-graphics', '${GRAPHICS_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-graphics', '${GRAPHICS_PACKAGES} ${AV_PACKAGES}', '', d)} \
 "
 IOT_PACKAGES = " \
                 aws-iot-device-sdk-embedded-c \
