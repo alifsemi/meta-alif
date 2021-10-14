@@ -195,6 +195,8 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("DAC12(.*)_STATUS .*", "DAC12\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-mhu', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("_MHU(.*)_STATUS .*", "_MHU\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("CDC200(.*)_STATUS .*", "CDC200\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
 }
 
 addtask dct_to_dts after do_configure before do_compile
