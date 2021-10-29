@@ -85,19 +85,20 @@ def encrypt_data(in_file,out_file,aes_key,direction):
                     read_bytes = pad(read_bytes, AES.block_size)
                 swap_read_bytes = bytearray(read_bytes)
                 swap_read_bytes.reverse()
-                ciphered_bytes = cipher.encrypt(swap_read_bytes)
+                ciphered_bytes = cipher.encrypt(bytes(swap_read_bytes))
                 swap_data = bytearray (ciphered_bytes)
                 swap_data.reverse()
                 fd_out.write(swap_data)
             elif direction == 0:
                 swap_cipher_bytes = bytearray(read_bytes)
                 swap_cipher_bytes.reverse()
-                deciphered_bytes = cipher.decrypt(swap_cipher_bytes)
+                deciphered_bytes = cipher.decrypt(bytes(swap_cipher_bytes))
                 swap_data = bytearray(deciphered_bytes)
                 swap_data.reverse()
                 fd_out.write(swap_data)
             read_bytes = fd_in.read(16)
-    except Exception:
+    except Exception as error:
+        print(error)
         return -1
     fd_in.close()
     fd_out.close()
