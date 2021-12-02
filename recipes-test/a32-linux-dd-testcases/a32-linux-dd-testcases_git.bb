@@ -25,6 +25,8 @@ do_install() {
     oe_runmake DESTDIR="${D}" TARGET=install
 }
 
+PACKAGES =. "${PN}-cdc200 "
+FILES_${PN}-cdc200 = "/opt/linux_dd_test/cdc200"
 FILES_${PN} = "/opt/linux_dd_test/"
 
 COMPATIBLE_MACHINE = "(bolt.*fpga).*"

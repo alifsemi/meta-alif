@@ -52,6 +52,7 @@ GRAPHICS_PACKAGES = " \
 	d2d-mod \
 	kmod \
 	fbset \
+	a32-linux-dd-testcases-cdc200 \
 "
 
 AV_PACKAGES = " \
