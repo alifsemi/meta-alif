@@ -33,7 +33,7 @@ busybox-udhcpc \
 a32-linux-dd-testcases \
 base-passwd \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-sd-boot', '${SD_PACKAGES}', '', d)} \
-${@bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200, '${CDC200_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200', '${CDC200_PACKAGES}', '', d)} \
 "
 
 SD_PACKAGES = " util-linux-fdisk \
