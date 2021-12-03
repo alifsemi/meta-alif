@@ -1,6 +1,6 @@
 SUMMARY = "Minimal boot requirements for the APSS"
 DESCRIPTION = "The set of packages required to boot the APSS"
-PR = "r2"
+PR = "r3"
 
 inherit packagegroup
 
@@ -33,6 +33,7 @@ busybox-udhcpc \
 a32-linux-dd-testcases \
 base-passwd \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-sd-boot', '${SD_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200, '${CDC200_PACKAGES}', '', d)} \
 "
 
 SD_PACKAGES = " util-linux-fdisk \
@@ -52,6 +53,9 @@ GRAPHICS_PACKAGES = " \
 	d2d-mod \
 	kmod \
 	fbset \
+"
+
+CDC200_PACKAGES = " \
 	a32-linux-dd-testcases-cdc200 \
 "
 
