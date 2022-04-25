@@ -11,8 +11,9 @@ SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-usb-host", "fi
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-cdc200", "file://cdc200.cfg", "" ,d)}"
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-i2c-i3c", "file://i2c-i3c.cfg", "" ,d)}"
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-i2s", "file://i2s.cfg", "" ,d)}"
+SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-utimer", "file://utimer.cfg", "" ,d)}"
 
-PR .= ".18"
+PR .= ".19"
 inherit dct-kernel
 
 KERNEL_CC_append = " -DA32_HWSEM_MST_ID=${A32_HWSEM_MST_ID} "
