@@ -1,6 +1,6 @@
 SUMMARY = "Minimal boot requirements for the APSS"
 DESCRIPTION = "The set of packages required to boot the APSS"
-PR = "r3"
+PR = "r4"
 
 inherit packagegroup
 
@@ -30,10 +30,11 @@ RDEPENDS_packagegroup-core-apss-base = " \
 packagegroup-core-boot \
 busybox-udhcpd \
 busybox-udhcpc \
-a32-linux-dd-testcases \
 base-passwd \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-sd-boot', '${SD_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200', '${CDC200_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-mhu', '${MHU_WDOG_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-hwsem', '${HWSEM_PACKAGES}', '', d)} \
 "
 
 SD_PACKAGES = " util-linux-fdisk \
@@ -57,6 +58,15 @@ GRAPHICS_PACKAGES = " \
 
 CDC200_PACKAGES = " \
 	a32-linux-dd-testcases-cdc200 \
+"
+
+HWSEM_PACKAGES = " \
+a32-linux-dd-testcases-hwsem \
+"
+
+MHU_WDOG_PACKAGES = " \
+a32-linux-dd-testcases-mhu \
+a32-linux-dd-testcases-watchdog \
 "
 
 AV_PACKAGES = " \
