@@ -1,0 +1,26 @@
+Fixes the following error during remote GDB debugging
+over ethernet.
+-- snip --
+Remote 'g' packet reply is too long (expected 168 bytes, got 328 bytes): 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030feffbe00000000f07cfbb6100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+-- snip --
+
+Upstream patch: https://sourceware.org/bugzilla/attachment.cgi?id=8512&action=diff
+
+diff -Naurp gdb-8.3.1_org/gdb/remote.c gdb-8.3.1/gdb/remote.c
+--- gdb-8.3.1_org/gdb/remote.c	2019-09-21 03:34:41.000000000 +0530
++++ gdb-8.3.1/gdb/remote.c	2022-06-07 15:02:15.269469786 +0530
+@@ -8034,12 +8034,14 @@ remote_target::process_g_packet (struct
+ 
+   buf_len = strlen (rs->buf.data ());
+ 
++#if 0 /* FIXME: Workaround to allow remote debugging via TCP */
+   /* Further sanity checks, with knowledge of the architecture.  */
+   if (buf_len > 2 * rsa->sizeof_g_packet)
+     error (_("Remote 'g' packet reply is too long (expected %ld bytes, got %d "
+ 	     "bytes): %s"),
+ 	   rsa->sizeof_g_packet, buf_len / 2,
+ 	   rs->buf.data ());
++#endif
+ 
+   /* Save the size of the packet sent to us by the target.  It is used
+      as a heuristic when determining the max size of packets that the
