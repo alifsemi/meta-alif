@@ -5,11 +5,11 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://license.rst;md5=c709b197e22b81ede21109dbffd5f363"
 DEPENDS += " dtc-native coreutils-native"
 DEPENDS += " ${TF-A_DEPENDS} "
-PR = "r14"
+PR = "r15"
 
-TFA_BRANCH ?= "bolt-fpga"
+TFA_BRANCH ?= "fpga-b0"
 
-TFA_TREE ?= "git://10.10.10.22/arm-tf.git;protocol=http"
+TFA_TREE ?= "git://10.10.10.22/arm-trusted-firmware.git;protocol=http"
 
 SRC_URI = "${TFA_TREE};branch=${TFA_BRANCH}"
 SRCREV = "${AUTOREV}"
@@ -26,7 +26,7 @@ TF-A_DEBUG ?= "1"
 TF-A_AARCH32_SP ?= "sp_min"
 TF-A_BL33 ?= ""
 
-TF-A_TARGET_IMAGES ?= "all"
+TF-A_TARGET_IMAGES ?= "bl32"
 TF-A_EXTRA_OPTIONS ?= ""
 
 inherit deploy
