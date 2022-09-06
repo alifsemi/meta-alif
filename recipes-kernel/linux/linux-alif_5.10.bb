@@ -1,6 +1,6 @@
-ALIF_KERNEL_BRANCH ?= "bolt-fpga-b0-5.4.y"
+ALIF_KERNEL_BRANCH ?= "bolt-fpga-b0-5.10.y"
 
-PR = "r7"
+PR = "r8"
 
 require recipes-kernel/linux/linux-yocto.inc
 require recipes-kernel/linux/linux-alif.inc
@@ -17,7 +17,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 KERNEL_VERSION_SANITY_SKIP = "1"
 BB_GENERATE_MIRROR_TARBALLS = "0"
 
-LINUX_VERSION ?= "5.4.25"
+LINUX_VERSION ?= "5.10.141"
 PV = "${LINUX_VERSION}+git${SRCPV}"
 
 S = "${WORKDIR}/git"
