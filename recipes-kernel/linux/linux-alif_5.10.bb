@@ -1,6 +1,6 @@
 ALIF_KERNEL_BRANCH ?= "bolt-fpga-b0-5.10.y"
 
-PR = "r8"
+PR = "r9"
 
 require recipes-kernel/linux/linux-yocto.inc
 require recipes-kernel/linux/linux-alif.inc
@@ -12,7 +12,7 @@ SRC_URI = "${ALIF_KERNEL_TREE};branch=${ALIF_KERNEL_BRANCH}"
 KCONFIG_MODE="--alldefconfig"
 SRCREV = "${ALIF_KERNEL_BRANCH}"
 
-LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
+LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 KERNEL_VERSION_SANITY_SKIP = "1"
 BB_GENERATE_MIRROR_TARBALLS = "0"
