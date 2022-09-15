@@ -1,0 +1,93 @@
+* Link demo application with static library (containing
+.o files) to reduce its size.
+
+* Modify main.c to display "Hello World!" graphics
+on LCD.
+
+diff --git a/Makefile b/Makefile
+index ba6972b..888b80c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -2,6 +2,7 @@
+ # Makefile
+ #
+ CC ?= gcc
++AR ?= ar
+ LVGL_DIR_NAME ?= lvgl
+ LVGL_DIR ?= ${shell pwd}
+ CFLAGS ?= -O3 -g0 -I$(LVGL_DIR)/ -Wall -Wshadow -Wundef -Wmissing-prototypes -Wno-discarded-qualifiers -Wall -Wextra -Wno-unused-function -Wno-error=strict-prototypes -Wpointer-arith -fno-strict-aliasing -Wno-error=cpp -Wuninitialized -Wmaybe-uninitialized -Wno-unused-parameter -Wno-missing-field-initializers -Wtype-limits -Wsizeof-pointer-memaccess -Wno-format-nonliteral -Wno-cast-qual -Wunreachable-code -Wno-switch-default -Wreturn-type -Wmultichar -Wformat-security -Wno-ignored-qualifiers -Wno-error=pedantic -Wno-sign-compare -Wno-error=missing-prototypes -Wdouble-promotion -Wclobbered -Wdeprecated -Wempty-body -Wtype-limits -Wshift-negative-value -Wstack-usage=2048 -Wno-unused-value -Wno-unused-parameter -Wno-missing-field-initializers -Wuninitialized -Wmaybe-uninitialized -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wtype-limits -Wsizeof-pointer-memaccess -Wno-format-nonliteral -Wpointer-arith -Wno-cast-qual -Wmissing-prototypes -Wunreachable-code -Wno-switch-default -Wreturn-type -Wmultichar -Wno-discarded-qualifiers -Wformat-security -Wno-ignored-qualifiers -Wno-sign-compare
+@@ -34,9 +35,12 @@ all: default
+ %.o: %.c
+ 	@$(CC)  $(CFLAGS) -c $< -o $@
+ 	@echo "CC $<"
+-    
+-default: $(AOBJS) $(COBJS) $(MAINOBJ)
+-	$(CC) -o $(BIN) $(MAINOBJ) $(AOBJS) $(COBJS) $(LDFLAGS)
++
++liblv.a: $(OBJS)
++	$(AR) cr liblv.a $(OBJS)
++
++default: liblv.a $(MAINOBJ)
++	$(CC) -o $(BIN) $(MAINOBJ) liblv.a $(LDFLAGS)
+ 
+ clean: 
+ 	rm -f $(BIN) $(AOBJS) $(COBJS) $(MAINOBJ)
+diff --git a/main.c b/main.c
+index 33cd734..b743e86 100644
+--- a/main.c
++++ b/main.c
+@@ -1,9 +1,6 @@
+ #include "lvgl/lvgl.h"
+-#include "lvgl/demos/lv_demos.h"
+ #include "lv_drivers/display/fbdev.h"
+-#include "lv_drivers/indev/evdev.h"
+ #include <unistd.h>
+-#include <pthread.h>
+ #include <time.h>
+ #include <sys/time.h>
+ 
+@@ -11,7 +8,7 @@
+ 
+ int main(void)
+ {
+-    /*LittlevGL init*/
++    /*LVGL init*/
+     lv_init();
+ 
+     /*Linux frame buffer device init*/
+@@ -29,29 +26,14 @@ int main(void)
+     lv_disp_drv_init(&disp_drv);
+     disp_drv.draw_buf   = &disp_buf;
+     disp_drv.flush_cb   = fbdev_flush;
+-    disp_drv.hor_res    = 800;
+-    disp_drv.ver_res    = 480;
++    disp_drv.hor_res    = 480;
++    disp_drv.ver_res    = 800;
+     lv_disp_drv_register(&disp_drv);
+ 
+-    evdev_init();
+-    static lv_indev_drv_t indev_drv_1;
+-    lv_indev_drv_init(&indev_drv_1); /*Basic initialization*/
+-    indev_drv_1.type = LV_INDEV_TYPE_POINTER;
+-
+-    /*This function will be called periodically (by the library) to get the mouse position and state*/
+-    indev_drv_1.read_cb = evdev_read;
+-    lv_indev_t *mouse_indev = lv_indev_drv_register(&indev_drv_1);
+-
+-
+-    /*Set a cursor for the mouse*/
+-    LV_IMG_DECLARE(mouse_cursor_icon)
+-    lv_obj_t * cursor_obj = lv_img_create(lv_scr_act()); /*Create an image object for the cursor */
+-    lv_img_set_src(cursor_obj, &mouse_cursor_icon);           /*Set the image source*/
+-    lv_indev_set_cursor(mouse_indev, cursor_obj);             /*Connect the image  object to the driver*/
+-
+-
+-    /*Create a Demo*/
+-    lv_demo_widgets();
++    /*Create a "Hello world!" label*/
++    lv_obj_t * label = lv_label_create(lv_scr_act());
++    lv_label_set_text(label, "Hello world!");
++    lv_obj_align(label, LV_ALIGN_CENTER, -125, 0);
+ 
+     /*Handle LitlevGL tasks (tickless mode)*/
+     while(1) {
