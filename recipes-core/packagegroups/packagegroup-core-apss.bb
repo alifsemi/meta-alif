@@ -58,6 +58,7 @@ GRAPHICS_PACKAGES = " \
 
 CDC200_PACKAGES = " \
 	a32-linux-dd-testcases-cdc200 \
+	lv-port-linux-frame-buffer \
 "
 
 HWSEM_PACKAGES = " \
