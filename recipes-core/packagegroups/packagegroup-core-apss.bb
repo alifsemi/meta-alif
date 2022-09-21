@@ -35,6 +35,7 @@ ${@bb.utils.contains('DISTRO_FEATURES', 'apss-sd-boot', '${SD_PACKAGES}', '', d)
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200', '${CDC200_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-mhu', '${MHU_WDOG_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-hwsem', '${HWSEM_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-crc', '${CRC_PACKAGES}', '', d)} \
 "
 
 SD_PACKAGES = " util-linux-fdisk \
@@ -73,6 +74,10 @@ a32-linux-dd-testcases-watchdog \
 AV_PACKAGES = " \
 	alsa-utils \
 	alsa-lib \
+"
+
+CRC_PACKAGES =  " \
+a32-linux-dd-testcases-crc \
 "
 
 RDEPENDS_packagegroup-core-apss-graphics = " \
