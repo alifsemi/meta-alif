@@ -1,3 +1,11 @@
+# Copyright (C) 2022 Alif Semiconductor - All Rights Reserved.
+# Use, distribution and modification of this code is permitted under the
+# terms stated in the Alif Semiconductor Software License Agreement
+#
+# You should have received a copy of the Alif Semiconductor Software
+# License Agreement with this file. If not, please write to:
+# contact@alifsemi.com, or visit: https://alifsemi.com/license
+
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-graphics", "file://graphics.cfg", "" ,d)}"
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-nfs", "file://nfs.cfg", "" ,d)}"
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-sd-share", "file://sd.cfg", "" ,d)}"
@@ -15,7 +23,7 @@ SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-utimer", "file
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-i3c", "file://i3c.cfg", "" ,d)}"
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-crc", "file://crc.cfg", "" ,d)}"
 
-PR .= ".21"
+PR .= ".22"
 inherit dct-kernel
 
 KERNEL_CC_append = " -DA32_HWSEM_MST_ID=${A32_HWSEM_MST_ID} "
