@@ -10,9 +10,9 @@ SUMMARY = "Linux device drivers test cases"
 DESCRIPTION = "a32-linux-DD-testcases contains test cases of various \
 Linux device drivers, which verified basic functionality of Linux \
 device drivers."
-LICENSE="MIT"
-LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
-PR = "r6"
+LICENSE="Alif"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=e5c68df4a3ef4a551f3229bfb6905840"
+PR = "r7"
 
 LINUX_DD_TC_BRANCH ?= "bolt-rev-a0"
 
