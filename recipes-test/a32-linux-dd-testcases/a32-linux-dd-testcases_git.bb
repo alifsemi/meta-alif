@@ -4,7 +4,7 @@ Linux device drivers, which verified basic functionality of Linux \
 device drivers."
 LICENSE="MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
-PR = "r2"
+PR = "r3"
 
 LINUX_DD_TC_BRANCH ?= "bolt-rev-a0"
 
@@ -14,6 +14,7 @@ SRC_URI = "${LINUX_DD_TC_TREE};branch=${LINUX_DD_TC_BRANCH}"
 SRCREV = "${AUTOREV}"
 PV = "1.0+git${SRCPV}"
 S = "${WORKDIR}/git"
+LDFLAGS = ""
 
 do_configure[noexec] = "1"
 
@@ -29,7 +30,7 @@ PACKAGES =. "${PN}-cdc200 ${PN}-hwsem ${PN}-watchdog ${PN}-mhu "
 FILES_${PN}-cdc200 = "/opt/linux_dd_test/cdc200"
 FILES_${PN}-hwsem = "/opt/linux_dd_test/hwsem"
 FILES_${PN}-watchdog = "/opt/linux_dd_test/watchdog"
-FILES_${PN}-mhu = "/opt/linux_dd_test/mhu/services*"
+FILES_${PN}-mhu = "/opt/linux_dd_test/mhu/services* /opt/linux_dd_test/mhu/main ${libdir}"
 FILES_${PN} = "/opt/linux_dd_test/mhu/pthread* /opt/linux_dd_test/mhu/test*"
 
 COMPATIBLE_MACHINE = "(bolt.*fpga).*"
