@@ -1,36 +1,21 @@
-python aes_enc_kernel () {
+python __anonymous () {
     if d.getVar("ENABLE_AES") == "1":
-        for imagetype in d.getVar("KERNEL_IMAGETYPES").split():
-            if imagetype in ['xipImage']:
-                import os, CSPI_AES128_ECB
-                image_loc = d.getVar("B") + "/" + d.getVar("KERNEL_OUTPUT_DIR")
-                in_file = image_loc + "/" + "".join(imagetype)
-                out_file = image_loc + "/" + "".join(imagetype) + ".enc"
-                aes_key = d.getVar("AES_ENC_KEY")
-                check = CSPI_AES128_ECB.encrypt_data(in_file, out_file, aes_key, 1)
-                if check != 0:
-                    bb.fatal("AES encryption for %s with AES key %s FAILED!!!!" %(in_file, aes_key))
-                else:
-                    bb.note("AES encryption for %s with AES key %s SUCCEEDED!!!!" %(in_file, aes_key))
-                    os.rename(in_file, in_file + ".orig")
-                    os.rename(out_file, in_file)
+        if bb.data.inherits_class('image', d) or bb.data.inherits_class('kernel', d):
+            depends = d.getVar("DEPENDS")
+            d.setVar("DEPENDS", depends + " python3-pycryptodome-native ")
+            inherits = d.getVar("INHERIT")
+            d.setVar("INHERIT", inherits + " python3native")
 }
 
+aes_enc_rootfs() {
+ if [ "${ENABLE_AES}" = "1" ] ; then
+    for iter in ${IMAGE_FSTYPES} ; do
+        if [ "$iter" = "cramfs-xip" ] ; then
+            ${STAGING_BINDIR_NATIVE}/python3-native/python3 ${ALIFBASE}/lib/CSPI_AES128_ECB.py -i ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter -o ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter.enc -k ${AES_ENC_KEY} -d 1
+            mv ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter.orig
+            mv ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter.enc ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter
+        fi
+    done
+ fi
 
-python aes_enc_rootfs() {
-    if d.getVar("ENABLE_AES") == "1":
-        for imagefstype in d.getVar("IMAGE_FSTYPES").split():
-            if imagefstype in ['cramfs-xip']:
-                import os, CSPI_AES128_ECB
-                rfs_name = d.getVar("IMGDEPLOYDIR")+ "/" + d.getVar("IMAGE_NAME") + d.getVar("IMAGE_NAME_SUFFIX")
-                in_file = rfs_name + "." + "".join(imagefstype)
-                out_file = rfs_name + "." + "".join(imagefstype) + ".enc"
-                aes_key = d.getVar("AES_ENC_KEY")
-                check = CSPI_AES128_ECB.encrypt_data(in_file, out_file, aes_key, 1)
-                if check != 0:
-                    bb.fatal("AES encryption for %s with AES key %s FAILED!!!!" %(in_file, aes_key))
-                else:
-                    bb.note("AES encryption for %s with AES key %s SUCCEEDED!!!!" %(in_file, aes_key))
-                    os.rename(in_file, in_file + ".orig")
-                    os.rename(out_file, in_file)
 }

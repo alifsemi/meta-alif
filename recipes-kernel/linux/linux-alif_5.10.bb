@@ -1,6 +1,6 @@
 ALIF_KERNEL_BRANCH ?= "bolt-fpga-b0-5.10.y"
 
-PR = "r9"
+PR = "r10"
 
 require recipes-kernel/linux/linux-yocto.inc
 require recipes-kernel/linux/linux-alif.inc
@@ -18,7 +18,6 @@ KERNEL_VERSION_SANITY_SKIP = "1"
 BB_GENERATE_MIRROR_TARBALLS = "0"
 
 LINUX_VERSION ?= "5.10.141"
-DEPENDS += "python3-pycryptodome-native"
 
 PV = "${LINUX_VERSION}+git${SRCPV}"
 

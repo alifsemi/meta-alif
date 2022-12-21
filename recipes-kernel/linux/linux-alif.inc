@@ -10,8 +10,8 @@ SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-ethernet", "fi
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-usb-host", "file://usb_host.cfg", "" ,d)}"
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-cdc200", "file://cdc200.cfg", "" ,d)}"
 
-PR .= ".12"
-inherit python3native dct-kernel
+PR .= ".13"
+inherit dct-kernel
 
 KERNEL_CC_append = " -DA32_HWSEM_MST_ID=${A32_HWSEM_MST_ID} "
 
@@ -24,9 +24,17 @@ do_compile_prepend () {
     fi
 }
 
-python do_aes_enc() {
- if d.getVar("ENABLE_AES") == "1":
-    bb.build.exec_func("aes_enc_kernel", d)
+
+do_aes_enc() {
+ if [ "${ENABLE_AES}" = "1" ] ; then
+    for iter in ${KERNEL_IMAGETYPES} ; do
+        if [ "$iter" = "xipImage" ] ; then
+            ${STAGING_BINDIR_NATIVE}/python3-native/python3 ${ALIFBASE}/lib/CSPI_AES128_ECB.py -i ${B}/${KERNEL_OUTPUT_DIR}/$iter -o ${B}/${KERNEL_OUTPUT_DIR}/$iter.enc -k ${AES_ENC_KEY} -d 1
+            mv ${B}/${KERNEL_OUTPUT_DIR}/$iter ${B}/${KERNEL_OUTPUT_DIR}/$iter.orig
+            mv ${B}/${KERNEL_OUTPUT_DIR}/$iter.enc ${B}/${KERNEL_OUTPUT_DIR}/$iter
+        fi
+    done
+ fi
 }
 
 addtask aes_enc before do_install after do_compile
