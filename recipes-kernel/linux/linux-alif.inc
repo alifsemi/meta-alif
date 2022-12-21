@@ -10,8 +10,8 @@ SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-ethernet", "fi
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-usb-host", "file://usb_host.cfg", "" ,d)}"
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-cdc200", "file://cdc200.cfg", "" ,d)}"
 
-PR .= ".11"
-inherit dct-kernel
+PR .= ".12"
+inherit python3native dct-kernel
 
 KERNEL_CC_append = " -DA32_HWSEM_MST_ID=${A32_HWSEM_MST_ID} "
 
@@ -23,3 +23,10 @@ do_compile_prepend () {
         sed -i "s:^CONFIG_PHYS_OFFSET=.*:CONFIG_PHYS_OFFSET=${TRUSTED_SRAM0}:g" ${B}/.config
     fi
 }
+
+python do_aes_enc() {
+ if d.getVar("ENABLE_AES") == "1":
+    bb.build.exec_func("aes_enc_kernel", d)
+}
+
+addtask aes_enc before do_install after do_compile

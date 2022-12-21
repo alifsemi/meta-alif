@@ -18,6 +18,8 @@ KERNEL_VERSION_SANITY_SKIP = "1"
 BB_GENERATE_MIRROR_TARBALLS = "0"
 
 LINUX_VERSION ?= "5.10.141"
+DEPENDS += "python3-pycryptodome-native"
+
 PV = "${LINUX_VERSION}+git${SRCPV}"
 
 S = "${WORKDIR}/git"

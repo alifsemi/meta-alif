@@ -5,7 +5,7 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://license.rst;md5=1dd070c98a281d18d9eefd938729b031"
 DEPENDS += " dtc-native coreutils-native"
 DEPENDS += " ${TF-A_DEPENDS} "
-PR = "r16"
+PR = "r17"
 
 TFA_BRANCH ?= "fpga-b0"
 
@@ -43,6 +43,7 @@ do_compile() {
       CROSS_COMPILE=${TARGET_PREFIX} \
       AARCH32_SP=${TF-A_AARCH32_SP} \
       BL33=${TF-A_BL33} \
+      ENABLE_AES=${ENABLE_AES} AES_ENC_KEY=${AES_ENC_KEY} \
       ${TF-A_EXTRA_OPTIONS} \
       ${TF-A_TARGET_IMAGES}
 }
