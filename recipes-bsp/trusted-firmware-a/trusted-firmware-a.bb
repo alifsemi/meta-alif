@@ -5,9 +5,9 @@ LICENSE = "BSD-3-Clause & Alif"
 LIC_FILES_CHKSUM = "file://license.rst;md5=1dd070c98a281d18d9eefd938729b031"
 DEPENDS += " dtc-native coreutils-native"
 DEPENDS += " ${TF-A_DEPENDS} "
-PR = "r18"
+PR = "r19"
 
-TFA_BRANCH ?= "fpga-b0"
+TFA_BRANCH ?= "devkit-ex-b0"
 
 TFA_TREE ?= "git://10.10.10.22/arm-trusted-firmware.git;protocol=http"
 
@@ -60,5 +60,3 @@ do_deploy() {
 addtask deploy before do_build after do_install
 
 FILES_${PN} = "/bl32.bin"
-
-COMPATIBLE_MACHINE = "(bolt.*fpga).*"

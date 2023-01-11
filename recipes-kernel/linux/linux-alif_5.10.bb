@@ -6,9 +6,9 @@
 # License Agreement with this file. If not, please write to:
 # contact@alifsemi.com, or visit: https://alifsemi.com/license
 
-ALIF_KERNEL_BRANCH ?= "bolt-fpga-b0-5.10.y"
+ALIF_KERNEL_BRANCH ?= "devkit-ex-b0-5.10.y"
 
-PR = "r11"
+PR = "r12"
 
 require recipes-kernel/linux/linux-yocto.inc
 require recipes-kernel/linux/linux-alif.inc
@@ -34,4 +34,4 @@ S = "${WORKDIR}/git"
 #do_kernel_configme() {
 #}
 
-COMPATIBLE_MACHINE = "(bolt.*fpga).*"
+COMPATIBLE_MACHINE = "(devkit-e).*"
