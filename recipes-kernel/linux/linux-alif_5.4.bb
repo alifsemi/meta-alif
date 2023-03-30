@@ -6,9 +6,9 @@
 # License Agreement with this file. If not, please write to:
 # contact@alifsemi.com, or visit: https://alifsemi.com/license
 
-ALIF_KERNEL_BRANCH ?= "devkit-ex-b0-5.10.y"
+ALIF_KERNEL_BRANCH ?= "devkit-b0-5.10.y"
 
-PR = "r12"
+PR = "r0"
 
 require recipes-kernel/linux/linux-yocto.inc
 require recipes-kernel/linux/linux-alif.inc
@@ -25,7 +25,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 KERNEL_VERSION_SANITY_SKIP = "1"
 BB_GENERATE_MIRROR_TARBALLS = "0"
 
-LINUX_VERSION ?= "5.10.141"
+LINUX_VERSION ?= "5.4.25"
 
 PV = "${LINUX_VERSION}+git${SRCPV}"
 

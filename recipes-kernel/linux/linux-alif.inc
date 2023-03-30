@@ -23,7 +23,7 @@ SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-utimer", "file
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-i3c", "file://i3c.cfg", "" ,d)}"
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-crc", "file://crc.cfg", "" ,d)}"
 
-PR .= ".22"
+PR .= ".0"
 inherit dct-kernel
 
 KERNEL_CC_append = " -DA32_HWSEM_MST_ID=${A32_HWSEM_MST_ID} "
