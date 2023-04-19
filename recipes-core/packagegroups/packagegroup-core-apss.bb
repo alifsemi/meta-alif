@@ -18,17 +18,20 @@ PACKAGES = " \
 packagegroup-core-apss \
 packagegroup-core-apss-base \
 packagegroup-core-apss-iot \
-packagegroup-core-apss-graphics"
+packagegroup-core-apss-graphics \
+packagegroup-core-apss-pdm"
 
 SUMMARY_${PN} = "Application Processor SubSystem - Base and Core packages"
 SUMMARY_${PN}-base = "Application Processor SubSystem - Base packages"
 SUMMARY_${PN}-graphics = "Application Processor SubSystem - Base + Graphics packages"
 SUMMARY_${PN}-iot = "Application Processor Subsystem - IoT Libraries + Applications"
+SUMMARY_${PN}-pdm = "Application Processor Subsystem - PDM Libraries + Applications like ALSA"
 
 RDEPENDS_${PN} = " \
 ${PN}-base \
 ${PN}-graphics \
 ${PN}-iot \
+${PN}-pdm \
 "
 # Let core boot packagegroup does bot contain graphics packages
 #${@bb.utils.contains('DISTRO_FEATURES', 'apss-graphics', 'packagegroup-apss-graphics', '', d)} \
@@ -44,6 +47,7 @@ ${@bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200', '${CDC200_PACKAGES}', '',
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-mhu', '${MHU_WDOG_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-hwsem', '${HWSEM_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-crc', '${CRC_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-pdm', '${PDM_PACKAGES}', '', d)} \
 "
 
 SD_PACKAGES = " util-linux-fdisk \
@@ -88,9 +92,18 @@ CRC_PACKAGES =  " \
 a32-linux-dd-testcases-crc \
 "
 
+PDM_PACKAGES = " \
+alsa-utils-aplay \
+"
+
 RDEPENDS_packagegroup-core-apss-graphics = " \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-graphics', '${GRAPHICS_PACKAGES} ${AV_PACKAGES}', '', d)} \
 "
+
+RDEPENDS_packagegroup-core-apss-pdm = " \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-pdm', '${PDM_PACKAGES}', '', d)} \
+"
+
 IOT_PACKAGES = " \
                 aws-iot-device-sdk-embedded-c \
                 azure-iot-sdk-c \
