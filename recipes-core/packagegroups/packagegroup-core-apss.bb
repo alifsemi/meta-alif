@@ -44,7 +44,6 @@ ${@bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200', '${CDC200_PACKAGES}', '',
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-mhu', '${MHU_WDOG_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-hwsem', '${HWSEM_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-crc', '${CRC_PACKAGES}', '', d)} \
-${@bb.utils.contains('DISTRO_FEATURES', 'apss-pcm', '${PCM_PACKAGES}', '', d)} \
 "
 
 SD_PACKAGES = " util-linux-fdisk \
@@ -87,10 +86,6 @@ AV_PACKAGES = " \
 
 CRC_PACKAGES =  " \
 a32-linux-dd-testcases-crc \
-"
-
-PCM_PACKAGES = " \
-a32-linux-dd-testcases-pcm \
 "
 
 RDEPENDS_packagegroup-core-apss-graphics = " \
