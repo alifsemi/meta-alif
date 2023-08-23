@@ -6,7 +6,7 @@
 # License Agreement with this file. If not, please write to:
 # contact@alifsemi.com, or visit: https://alifsemi.com/license
 
-ALIF_KERNEL_BRANCH ?= "devkit-b0-5.10.y"
+ALIF_KERNEL_BRANCH ?= "devkit-b0-5.4.y"
 
 PR = "r0"
 
@@ -34,4 +34,4 @@ S = "${WORKDIR}/git"
 #do_kernel_configme() {
 #}
 
-COMPATIBLE_MACHINE = "(devkit-e).*"
+COMPATIBLE_MACHINE = "(devkit-e).*|(appkit-e).*"

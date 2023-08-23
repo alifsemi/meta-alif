@@ -6,9 +6,6 @@
 # License Agreement with this file. If not, please write to:
 # contact@alifsemi.com, or visit: https://alifsemi.com/license
 
-DTS_MACRO_FILE ?= "/arch/arm/boot/dts/devkit_ex_dct_defines.h"
-DTS_MACRO_FILE_ORG ?= "/arch/arm/boot/dts/devkit_ex_dct_defines.h.org"
-
 python do_dct_to_dts () {
     import json, re, shutil
     from os import path
