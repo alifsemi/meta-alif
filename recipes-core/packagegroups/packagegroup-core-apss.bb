@@ -42,6 +42,8 @@ packagegroup-core-boot \
 busybox-udhcpd \
 busybox-udhcpc \
 base-passwd \
+helloworld \
+helloworld-daemon \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-sd-boot', '${SD_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200', '${CDC200_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-mhu', '${MHU_WDOG_PACKAGES}', '', d)} \

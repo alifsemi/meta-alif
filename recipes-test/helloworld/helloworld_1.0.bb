@@ -10,9 +10,12 @@ LICENSE="MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 PR = "r1"
 
-SRC_URI = "file://helloworld.c"
+SRC_URI = "file://helloworld.c \
+           file://helloworld-daemon"
 PV = "1.0"
 S = "${WORKDIR}/"
+
+inherit update-rc.d
 
 do_configure[noexec] = "1"
 
@@ -21,7 +24,16 @@ do_compile(){
 }
 
 do_install() {
-    install -m 755 -D ${S}/helloworld ${D}${base_sbindir}/init
+    install -m 755 -D ${S}/helloworld ${D}${bindir}/helloworld
+    install -m 755 -D ${WORKDIR}/helloworld-daemon \
+                      ${D}${sysconfdir}/init.d/helloworld-daemon
+    install -d ${D}/etc/rcS.d/
+    update-rc.d -r ${D} helloworld-daemon defaults
 }
 
-FILES_${PN} = "${base_sbindir}"
+PACKAGES += "${PN}-daemon"
+
+FILES_${PN} = "${bindir}/helloworld"
+FILES_${PN}-daemon = "${sysconfdir}"
+INITSCRIPT_PACKAGES = "${PN}-daemon"
+INITSCRIPT_NAME_${PN}-daemon = "helloworld-daemon"

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+[ -x /usr/bin/helloworld ] || exit 0
+
+case "$1" in
+  start)
+    echo "*** Press any key within 5 seconds to login into a shell prompt ***"
+    read -s -t 5 KEY
+    if [ -z "$KEY" ] ; then
+      echo "Starting helloworld application in background."
+      echo "Stop it by running killall -9 helloworld"
+      /usr/bin/helloworld &
+    fi
+    exit 0
+    ;;
+  stop)
+    echo -n "Stopping helloworld application ..."
+    killall -9 helloworld
+    echo "done."
+    exit 0
+    ;;
+  *)
+    echo "error: invalid option $1.".
+    echo "usage: $(readlink -f $0) start|stop"
+    exit 1
+    ;;
+esac
