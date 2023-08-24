@@ -8,14 +8,14 @@
 
 LICENSE="MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
-PR = "r1"
+PR = "r2"
 
 SRC_URI = "file://helloworld.c \
            file://helloworld-daemon"
 PV = "1.0"
 S = "${WORKDIR}/"
 
-inherit update-rc.d
+DEPENDS += "update-rc.d-native"
 
 do_configure[noexec] = "1"
 

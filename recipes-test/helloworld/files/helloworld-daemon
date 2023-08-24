@@ -5,8 +5,8 @@
 case "$1" in
   start)
     echo "*** Press any key within 5 seconds to login into a shell prompt ***"
-    read -s -t 5 KEY
-    if [ -z "$KEY" ] ; then
+    read -n 1 -s -t 5 KEY
+    if [ $? -ne 0 ] ; then
       echo "Starting helloworld application in background."
       echo "Stop it by running killall -9 helloworld"
       /usr/bin/helloworld &
