@@ -15,7 +15,7 @@ case "$1" in
     ;;
   stop)
     echo -n "Stopping helloworld application ..."
-    killall -9 helloworld
+    ps | grep -q helloworld | grep -v grep && killall -15 helloworld
     echo "done."
     exit 0
     ;;
