@@ -2,14 +2,14 @@ SUMMARY = "Trusted Firmware for Cortex-A"
 DESCRIPTION = "Trusted Firmware-A"
 HOMEPAGE = "https://github.com/ARM-software/arm-trusted-firmware"
 LICENSE = "BSD-3-Clause & Alif"
-LIC_FILES_CHKSUM = "file://license.rst;md5=1dd070c98a281d18d9eefd938729b031"
+LIC_FILES_CHKSUM = "file://license.rst;md5=c709b197e22b81ede21109dbffd5f363"
 DEPENDS += " dtc-native coreutils-native"
 DEPENDS += " ${TF-A_DEPENDS} "
-PR = "r19"
+PR = "r20"
 
 TFA_BRANCH ?= "devkit-ex-b0"
 
-TFA_TREE ?= "git://10.10.10.22/arm-trusted-firmware.git;protocol=http"
+TFA_TREE ?= "git://10.10.10.22/arm-tf.git;protocol=http"
 
 SRC_URI = "${TFA_TREE};branch=${TFA_BRANCH}"
 SRCREV = "${AUTOREV}"
