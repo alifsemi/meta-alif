@@ -8,7 +8,7 @@
 
 SUMMARY = "Minimal boot requirements for the APSS"
 DESCRIPTION = "The set of packages required to boot the APSS"
-PR = "r6"
+PR = "r7"
 
 inherit packagegroup
 
@@ -44,7 +44,7 @@ busybox-udhcpc \
 base-passwd \
 helloworld \
 helloworld-daemon \
-gdbserver \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-debug', 'gdbserver', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-sd-boot', '${SD_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200', '${CDC200_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-mhu', '${MHU_WDOG_PACKAGES}', '', d)} \
