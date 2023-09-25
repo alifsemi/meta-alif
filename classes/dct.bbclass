@@ -177,4 +177,4 @@ def calculate_distro_features_from_dct(d, res):
     return " ".join(set(dct_distro_features.split()))
 
 DISTRO_FEATURES_append := " ${@calculate_distro_features_from_dct(d, res='slaves')}"
-XIP_KERNEL_LOAD_ADDR ?= "${@ '%s' %calculate_distro_features_from_dct(d, res='masters') if calculate_distro_features_from_dct(d, res='masters') else '0x80100000'}"
+XIP_KERNEL_LOAD_ADDR ?= "${@ '%s' %calculate_distro_features_from_dct(d, res='masters') if calculate_distro_features_from_dct(d, res='masters') else '0x80020000'}"
