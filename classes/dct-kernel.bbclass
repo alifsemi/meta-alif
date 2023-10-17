@@ -212,7 +212,7 @@ python do_choose_uart () {
     from pathlib import Path
     ker_dts_macro_file = d.getVar("S") + d.getVar("DTS_MACRO_FILE") or ""
     ker_dts_macro_file_write = Path(ker_dts_macro_file)
-    if bb.utils.contains('A32_UART', '2', True, False, d):
+    if bb.utils.contains('UART', '2', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("UART2_STATUS .*", "UART2_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("UART4_STATUS .*", "UART4_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
     else:
