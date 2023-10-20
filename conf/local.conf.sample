@@ -297,7 +297,8 @@ CONF_VERSION = "1"
 # The variable can contain the following options:
 #  "apss-mhu"       - add message handling unit (MHU) related packages
 #                     and Linux kernel configs into the images.
-#  "apss-hwsem"     - add hardware semphore (HWSEM) related packages#                     and Linux kernel configs into the images.
+#  "apss-hwsem"     - add hardware semphore (HWSEM) related packages
+#                     and Linux kernel configs into the images.
 #  "apss-ethernet"  - add ethernet related packages and Linux kernel configs
 #                     into the images.
 #  "apss-debug"     - add gdbserver debug tool and configs into the image.
