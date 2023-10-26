@@ -6,9 +6,9 @@
 # License Agreement with this file. If not, please write to:
 # contact@alifsemi.com, or visit: https://alifsemi.com/license
 
-PR .= ".3"
+PR .= ".4"
 
 RDEPENDS_${PN} += " \
     nativesdk-cramfs-tools \
-    nativesdk-python3-pycryptodome \
+    nativesdk-aes-enc-tool \
 "
