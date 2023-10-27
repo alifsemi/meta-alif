@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Alif Semiconductor - All Rights Reserved.
+# Copyright (C) 2023 Alif Semiconductor - All Rights Reserved.
 # Use, distribution and modification of this code is permitted under the
 # terms stated in the Alif Semiconductor Software License Agreement
 #
@@ -41,7 +41,7 @@ do_compile_prepend () {
 
 
 do_aes_enc() {
- if [ "${ENABLE_AES}" = "1" ] ; then
+ if [ "${AES_EN}" = "1" ] ; then
     for iter in ${KERNEL_IMAGETYPES} ; do
         if [ "$iter" = "xipImage" ] ; then
             ${STAGING_BINDIR_NATIVE}/python3-native/python3 ${ALIFBASE}/lib/CSPI_AES128_ECB.py -i ${B}/${KERNEL_OUTPUT_DIR}/$iter -o ${B}/${KERNEL_OUTPUT_DIR}/$iter.enc -k ${AES_ENC_KEY} -d 1

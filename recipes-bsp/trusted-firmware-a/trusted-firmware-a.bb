@@ -5,7 +5,7 @@ LICENSE = "BSD-3-Clause & Alif"
 LIC_FILES_CHKSUM = "file://license.rst;md5=c709b197e22b81ede21109dbffd5f363"
 DEPENDS += " dtc-native coreutils-native"
 DEPENDS += " ${TF-A_DEPENDS} "
-PR = "r22"
+PR = "r23"
 
 TFA_BRANCH ?= "devkit-ex-b0"
 
@@ -43,7 +43,6 @@ do_compile() {
       CROSS_COMPILE=${TARGET_PREFIX} \
       AARCH32_SP=${TF-A_AARCH32_SP} \
       BL33=${TF-A_BL33} \
-      ENABLE_AES=${ENABLE_AES} AES_ENC_KEY=${AES_ENC_KEY} \
       ${TF-A_EXTRA_OPTIONS} \
       ${TF-A_TARGET_IMAGES}
 }
