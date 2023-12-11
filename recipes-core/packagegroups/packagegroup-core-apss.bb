@@ -8,7 +8,7 @@
 
 SUMMARY = "Minimal boot requirements for the APSS"
 DESCRIPTION = "The set of packages required to boot the APSS"
-PR = "r8"
+PR = "r9"
 
 inherit packagegroup
 
@@ -43,6 +43,7 @@ busybox-udhcpd \
 busybox-udhcpc \
 base-passwd \
 flash-tool \
+hyperram-test \
 helloworld \
 helloworld-daemon \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-debug', 'gdbserver', '', d)} \
