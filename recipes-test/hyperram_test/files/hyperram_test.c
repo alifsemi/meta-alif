@@ -15,7 +15,8 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 #define PAGE_SIZE	0x1000
-#define ITERATIONS	800
+#define OSPI0_SIZE	0x2000000
+#define ITERATIONS	(OSPI0_SIZE/PAGE_SIZE)
 #define HYPERRAM_LOC	0xA0000000
 #define DATA            0xA5
 int main ()
