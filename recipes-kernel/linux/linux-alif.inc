@@ -25,7 +25,7 @@ SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-crc", "file://
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-pdm", "file://pdm.cfg", "" ,d)}"
 SRC_URI_append += " ${@bb.utils.contains("DISTRO_FEATURES", "apss-i2c", "file://i2c.cfg", "" ,d)}"
 
-PR .= ".6"
+PR .= ".7"
 inherit dct-kernel
 
 KERNEL_CC_append = " -DA32_HWSEM_MST_ID=${A32_HWSEM_MST_ID} "
@@ -35,7 +35,7 @@ do_compile_prepend () {
         sed -i "s:^CONFIG_XIP_PHYS_ADDR=.*:CONFIG_XIP_PHYS_ADDR=${XIP_KERNEL_LOAD_ADDR}:g" ${B}/.config
         sed -i "s:^CONFIG_MTD_PHYSMAP_START=.*:CONFIG_MTD_PHYSMAP_START=${KERNEL_MTD_START_ADDR}:g" ${B}/.config
         sed -i "s:^CONFIG_MTD_PHYSMAP_LEN=.*:CONFIG_MTD_PHYSMAP_LEN=${KERNEL_MTD_LEN}:g" ${B}/.config
-        sed -i "s:^CONFIG_PHYS_OFFSET=.*:CONFIG_PHYS_OFFSET=${TRUSTED_SRAM0}:g" ${B}/.config
+        sed -i "s:^CONFIG_PHYS_OFFSET=.*:CONFIG_PHYS_OFFSET=${TRUSTED_SRAM1}:g" ${B}/.config
     fi
 }
 
