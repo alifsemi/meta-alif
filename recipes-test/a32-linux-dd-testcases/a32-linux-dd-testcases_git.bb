@@ -12,12 +12,7 @@ Linux device drivers, which verified basic functionality of Linux \
 device drivers."
 LICENSE="Alif"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=e5c68df4a3ef4a551f3229bfb6905840"
-PR = "r10"
-
-LINUX_DD_TC_BRANCH ?= "devkit-ex-b0"
-
-LINUX_DD_TC_TREE ?= "git://10.10.10.22/a32_linux_DD_testcases.git;protocol=http"
-
+PR = "r11"
 SRC_URI = "${LINUX_DD_TC_TREE};branch=${LINUX_DD_TC_BRANCH}"
 SRCREV = "${AUTOREV}"
 PV = "1.0+git${SRCPV}"

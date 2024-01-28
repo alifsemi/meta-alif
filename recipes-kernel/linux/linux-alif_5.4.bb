@@ -6,19 +6,15 @@
 # License Agreement with this file. If not, please write to:
 # contact@alifsemi.com, or visit: https://alifsemi.com/license
 
-ALIF_KERNEL_BRANCH ?= "devkit-b0-5.4.y"
-
-PR = "r0"
+PR = "r1"
 
 require recipes-kernel/linux/linux-yocto.inc
 require recipes-kernel/linux/linux-alif.inc
 
-ALIF_KERNEL_TREE ?= "git://10.10.10.22/linux.git;protocol=http"
-
 SRC_URI = "${ALIF_KERNEL_TREE};branch=${ALIF_KERNEL_BRANCH}"
 
 KCONFIG_MODE="--allnoconfig"
-SRCREV = "${ALIF_KERNEL_BRANCH}"
+SRCREV ??= "${ALIF_KERNEL_BRANCH}"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
