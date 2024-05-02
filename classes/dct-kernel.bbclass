@@ -184,6 +184,8 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("UART(.*)_STATUS .*", "UART\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-usb', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("HSUSB_STATUS .*", "HSUSB_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-usb-host', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("HSUSB_STATUS .*", "HSUSB_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-utimer', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("UTIMER(.*)_STATUS .*", "UTIMER\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains_any('DISTRO_FEATURES', ['apss-sd-share', 'apss-sd-boot'], True, False, d):
