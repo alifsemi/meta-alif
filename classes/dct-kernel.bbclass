@@ -220,7 +220,10 @@ python do_choose_uart () {
     ker_dts_macro_file_write = Path(ker_dts_macro_file)
     if bb.utils.contains('UART', '2', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("UART2_STATUS .*", "UART2_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
-        ker_dts_macro_file_write.write_text(re.sub("UART4_STATUS .*", "UART4_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
+        if bb.utils.contains("DISTRO_FEATURES", 'apss-debug', True, False, d):
+            ker_dts_macro_file_write.write_text(re.sub("UART4_STATUS .*", "UART4_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        else:
+            ker_dts_macro_file_write.write_text(re.sub("UART4_STATUS .*", "UART4_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
     else:
         ker_dts_macro_file_write.write_text(re.sub("UART4_STATUS .*", "UART4_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("UART2_STATUS .*", "UART2_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
