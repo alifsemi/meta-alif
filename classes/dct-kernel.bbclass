@@ -199,7 +199,7 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("I2C1_STATUS .*", "I2C1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("CPI_STATUS .*", "CPI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-touch', True, False, d):
-	ker_dts_macro_file_write.write_text(re.sub("I2C1_STATUS .*", "I2C1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("I2C1_STATUS .*", "I2C1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-cpi', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("CPI_STATUS .*", "CPI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-adc', True, False, d):
