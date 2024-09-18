@@ -217,6 +217,16 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("I3C0_STATUS .*", "I3C0_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-i2c-i3c', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("I3C0_STATUS .*", "I3C0_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-adc12', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("ADC120_STATUS .*", "ADC120_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("ADC121_STATUS .*", "ADC121_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("ADC122_STATUS .*", "ADC122_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("ADC24_STATUS .*", "ADC24_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-adc24', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("ADC24_STATUS .*", "ADC24_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("ADC120_STATUS .*", "ADC120_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("ADC120_STATUS .*", "ADC120_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("ADC120_STATUS .*", "ADC120_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
 }
 
 python do_choose_uart () {
