@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Alif Semiconductor - All Rights Reserved.
+# Copyright (C) 2024 Alif Semiconductor - All Rights Reserved.
 # Use, distribution and modification of this code is permitted under the
 # terms stated in the Alif Semiconductor Software License Agreement
 #
@@ -8,7 +8,7 @@
 
 SUMMARY = "Minimal boot requirements for the APSS"
 DESCRIPTION = "The set of packages required to boot the APSS"
-PR = "r9"
+PR = "r10"
 
 inherit packagegroup
 
@@ -27,7 +27,7 @@ SUMMARY_${PN}-graphics = "Application Processor SubSystem - Base + Graphics pack
 SUMMARY_${PN}-iot = "Application Processor Subsystem - IoT Libraries + Applications"
 SUMMARY_${PN}-pdm = "Application Processor Subsystem - PDM Libraries + Applications like ALSA"
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
 ${PN}-base \
 ${PN}-graphics \
 ${PN}-iot \
@@ -37,7 +37,7 @@ ${PN}-pdm \
 #${@bb.utils.contains('DISTRO_FEATURES', 'apss-graphics', 'packagegroup-apss-graphics', '', d)} \
 #"
 
-RDEPENDS_packagegroup-core-apss-base = " \
+RDEPENDS:packagegroup-core-apss-base = " \
 packagegroup-core-boot \
 busybox-udhcpd \
 busybox-udhcpc \
@@ -101,11 +101,11 @@ PDM_PACKAGES = " \
 alsa-utils-aplay \
 "
 
-RDEPENDS_packagegroup-core-apss-graphics = " \
+RDEPENDS:packagegroup-core-apss-graphics = " \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-graphics', '${GRAPHICS_PACKAGES} ${AV_PACKAGES}', '', d)} \
 "
 
-RDEPENDS_packagegroup-core-apss-pdm = " \
+RDEPENDS:packagegroup-core-apss-pdm = " \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-pdm', '${PDM_PACKAGES}', '', d)} \
 "
 
@@ -113,6 +113,6 @@ IOT_PACKAGES = " \
                 aws-iot-device-sdk-embedded-c \
                 azure-iot-sdk-c \
 "
-RDEPENDS_packagegroup-core-apss-iot = " \
+RDEPENDS:packagegroup-core-apss-iot = " \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-iot', '${IOT_PACKAGES}', '', d)} \
 "

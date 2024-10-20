@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Alif Semiconductor - All Rights Reserved.
+# Copyright (C) 2024 Alif Semiconductor - All Rights Reserved.
 # Use, distribution and modification of this code is permitted under the
 # terms stated in the Alif Semiconductor Software License Agreement
 #
@@ -12,7 +12,7 @@ Linux device drivers, which verified basic functionality of Linux \
 device drivers."
 LICENSE="Alif"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=e5c68df4a3ef4a551f3229bfb6905840"
-PR = "r11"
+PR = "r12"
 SRC_URI = "${LINUX_DD_TC_TREE};branch=${LINUX_DD_TC_BRANCH}"
 SRCREV = "${AUTOREV}"
 PV = "1.0+git${SRCPV}"
@@ -30,11 +30,11 @@ do_install() {
 }
 
 PACKAGES =. "${PN}-cdc200 ${PN}-hwsem ${PN}-watchdog ${PN}-mhu ${PN}-crc libmhuservices libmhuservices-dev "
-FILES_${PN}-cdc200 = "/opt/linux_dd_test/cdc200"
-FILES_${PN}-hwsem = "/opt/linux_dd_test/hwsem"
-FILES_${PN}-watchdog = "/opt/linux_dd_test/watchdog"
-FILES_${PN}-mhu = "/opt/linux_dd_test/mhu/services* /opt/linux_dd_test/mhu/main"
-FILES_${PN}-crc = "/opt/linux_dd_test/crc"
-FILES_libmhuservices = "${libdir}/libservices.so.*"
-FILES_libmhuservices-dev = "${libdir}/libservices.so"
-FILES_${PN} = "/opt/linux_dd_test/mhu/pthread* /opt/linux_dd_test/mhu/test*"
+FILES:${PN}-cdc200 = "/opt/linux_dd_test/cdc200"
+FILES:${PN}-hwsem = "/opt/linux_dd_test/hwsem"
+FILES:${PN}-watchdog = "/opt/linux_dd_test/watchdog"
+FILES:${PN}-mhu = "/opt/linux_dd_test/mhu/services* /opt/linux_dd_test/mhu/main"
+FILES:${PN}-crc = "/opt/linux_dd_test/crc"
+FILES:libmhuservices = "${libdir}/libservices.so.*"
+FILES:libmhuservices-dev = "${libdir}/libservices.so"
+FILES:${PN} = "/opt/linux_dd_test/mhu/pthread* /opt/linux_dd_test/mhu/test*"

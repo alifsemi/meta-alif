@@ -1,4 +1,4 @@
-# Copyright (C) 2023 Alif Semiconductor - All Rights Reserved.
+# Copyright (C) 2024 Alif Semiconductor - All Rights Reserved.
 # Use, distribution and modification of this code is permitted under the
 # terms stated in the Alif Semiconductor Software License Agreement
 #
@@ -6,6 +6,6 @@
 # License Agreement with this file. If not, please write to:
 # contact@alifsemi.com, or visit: https://alifsemi.com/license
 
-PR .= ".7"
+PR .= ".8"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"

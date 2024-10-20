@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Alif Semiconductor - All Rights Reserved.
+# Copyright (C) 2024 Alif Semiconductor - All Rights Reserved.
 # Use, distribution and modification of this code is permitted under the
 # terms stated in the Alif Semiconductor Software License Agreement
 #
@@ -11,14 +11,14 @@ HOMEPAGE = "https://github.com/lvgl/lv_port_linux_frame_buffer"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=802d3d83ae80ef5f343050bf96cce3a4"
 
-SRC_URI = "gitsm://github.com/lvgl/lv_port_linux_frame_buffer.git;branch=master;protocol=git \
+SRC_URI = "gitsm://github.com/lvgl/lv_port_linux_frame_buffer.git;branch=master;protocol=https \
           file://reduce-size-and-add-basic-app.patch"
 
 SRCREV = "ba8b092b49a8c5eeea29ee32877226909a824aee"
 
 inherit autotools-brokensep
 
-PR = "r1"
+PR = "r2"
 S = "${WORKDIR}/git"
 
 do_configure[noexec] = "1"

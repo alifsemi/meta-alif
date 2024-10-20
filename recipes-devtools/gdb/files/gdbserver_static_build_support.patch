@@ -1,50 +1,55 @@
---- a/gdb/gdbserver/Makefile.in_org	2023-08-29 16:21:17.930142528 +0530
-+++ b/gdb/gdbserver/Makefile.in	2023-08-29 16:30:45.408540405 +0530
-@@ -354,7 +354,7 @@ FLAGS_TO_PASS = \
+Add support to build statically linked gdbserver
+
+Upstream-Status: Inappropriate [embedded specific]
+--- gdb-14.2/gdbserver/Makefile.in_org	2024-10-20 12:30:04.627955245 +0530
++++ gdb-14.2/gdbserver/Makefile.in	2024-10-20 12:35:26.768474057 +0530
+@@ -304,7 +304,7 @@ FLAGS_TO_PASS = \
  # All generated files which can be included by another file.
- generated_files = config.h $(GNULIB_H)
+ generated_files = config.h
  
 -all: gdbserver$(EXEEXT) gdbreplay$(EXEEXT) $(extra_libraries)
 +all: gdbserver$(EXEEXT) gdbserver_static$(EXEEXT) gdbreplay$(EXEEXT) $(extra_libraries)
- 	@$(MAKE) $(FLAGS_TO_PASS) DO=$@ "DODIRS=$(SUBDIRS)" subdir_do
  
  # Traditionally "install" depends on "all".  But it may be useful
-@@ -374,6 +374,8 @@ install-only:
+ # not to; for example, if the user has made some trivial change to a
+@@ -323,6 +323,7 @@ install-only:
  	fi; \
- 	$(SHELL) $(srcdir)/../../mkinstalldirs $(DESTDIR)$(bindir); \
- 	$(INSTALL_PROGRAM) gdbserver$(EXEEXT) $(DESTDIR)$(bindir)/$$n$(EXEEXT)
-+	$(INSTALL_PROGRAM) gdbserver_static$(EXEEXT) \
-+	$(DESTDIR)$(bindir)/gdbserver_static$(EXEEXT)
- 	# Note that we run install and not install-only, as the latter
- 	# is not part of GNU standards and in particular not provided
- 	# in libiberty.
-@@ -383,6 +385,7 @@ uninstall: force
- 	n=`echo gdbserver | sed '$(program_transform_name)'`; \
- 	if [ x$$n = x ]; then n=gdbserver; else true; fi; \
- 	rm -f $(DESTDIR)/$(bindir)/$$n$(EXEEXT) $(DESTDIR)$(man1dir)/$$n.1
+ 	$(SHELL) $(srcdir)/../mkinstalldirs $(DESTDIR)$(bindir); \
+ 	$(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) gdbserver$(EXEEXT) $(DESTDIR)$(bindir)/$$n$(EXEEXT)
++	$(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) gdbserver_static$(EXEEXT) $(DESTDIR)$(bindir)/gdbserver_static$(EXEEXT)
+ 
+ install-strip:
+ 	$(MAKE) $(FLAGS_TO_PASS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+@@ -337,6 +338,7 @@ uninstall: force
+ 		rm -f $(DESTDIR)$(libdir)/$(IPA_LIB); \
+ 	fi; \
+ 	rm -f $(DESTDIR)/$(bindir)/$$n$(EXEEXT)
 +	rm -f $(DESTDIR)/$(bindir)/gdbserver_static$(EXEEXT)
- 	@$(MAKE) $(FLAGS_TO_PASS) DO=$@ "DODIRS=$(SUBDIRS)" subdir_do
  
  installcheck:
-@@ -401,6 +404,12 @@ gdbserver$(EXEEXT): $(sort $(OBS)) ${CDE
- 		-o gdbserver$(EXEEXT) $(OBS) $(LIBGNU) $(LIBIBERTY) \
- 		$(GDBSERVER_LIBS) $(XM_CLIBS)
+ check:
+@@ -356,6 +358,15 @@ gdbserver$(EXEEXT): $(sort $(OBS)) ${CDE
+ 		$(LIBGNU_EXTRA_LIBS) $(LIBIBERTY) $(INTL) \
+ 		$(GDBSERVER_LIBS) $(XM_CLIBS) $(WIN32APILIBS)
  
-+gdbserver_static$(EXEEXT): $(sort $(OBS)) ${CDEPS} $(LIBGNU) $(LIBIBERTY)
++gdbserver_static$(EXEEXT): $(sort $(OBS)) ${CDEPS} $(LIBGNU) $(LIBIBERTY) \
++		$(INTL_DEPS) $(GDBSUPPORT)
 +	$(SILENCE) rm -f gdbserver_static$(EXEEXT)
 +	$(ECHO_CXXLD) $(CC_LD) $(INTERNAL_CFLAGS) $(INTERNAL_LDFLAGS) \
-+		-o gdbserver_static$(EXEEXT) $(OBS) $(LIBGNU) $(LIBIBERTY) \
-+		$(GDBSERVER_LIBS) $(XM_CLIBS) -static
++		$(CXXFLAGS) \
++		-o gdbserver_static$(EXEEXT) $(OBS) $(GDBSUPPORT) $(LIBGNU) \
++		$(LIBGNU_EXTRA_LIBS) $(LIBIBERTY) $(INTL) \
++		$(GDBSERVER_LIBS) $(XM_CLIBS) $(WIN32APILIBS) -static
 +
- $(LIBGNU) $(LIBIBERTY) $(GNULIB_H): all-lib
- all-lib: $(GNULIB_BUILDDIR)/Makefile $(LIBIBERTY_BUILDDIR)/Makefile
- 	@$(MAKE) $(FLAGS_TO_PASS) DO=all DODIRS="$(SUBDIRS)" subdir_do
-@@ -453,7 +462,7 @@ tags: TAGS
+ gdbreplay$(EXEEXT): $(sort $(GDBREPLAY_OBS)) $(LIBGNU) $(LIBIBERTY) \
+ 		$(INTL_DEPS) $(GDBSUPPORT)
+ 	$(SILENCE) rm -f gdbreplay$(EXEEXT)
+@@ -408,7 +419,7 @@ tags: TAGS
  
- clean:
+ mostlyclean clean:
  	rm -f *.o ${ADD_FILES} *~
 -	rm -f gdbserver$(EXEEXT) gdbreplay$(EXEEXT) core make.log
 +	rm -f gdbserver$(EXEEXT) gdbserver_static$(EXEEXT) gdbreplay$(EXEEXT) core make.log
  	rm -f $(IPA_LIB)
- 	rm -f *-generated.c
+ 	rm -f *-generated.cc
  	rm -f stamp-xml

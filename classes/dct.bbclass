@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Alif Semiconductor - All Rights Reserved.
+# Copyright (C) 2024 Alif Semiconductor - All Rights Reserved.
 # Use, distribution and modification of this code is permitted under the
 # terms stated in the Alif Semiconductor Software License Agreement
 #
@@ -176,5 +176,5 @@ def calculate_distro_features_from_dct(d, res):
         json_file_object.close()
     return " ".join(set(dct_distro_features.split()))
 
-DISTRO_FEATURES_append := " ${@calculate_distro_features_from_dct(d, res='slaves')}"
+DISTRO_FEATURES:append := " ${@calculate_distro_features_from_dct(d, res='slaves')}"
 XIP_KERNEL_LOAD_ADDR ??= "${@ '%s' %calculate_distro_features_from_dct(d, res='masters') if calculate_distro_features_from_dct(d, res='masters') else '0x80020000'}"

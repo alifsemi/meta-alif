@@ -7,22 +7,32 @@ Dependencies
 
   URI: git://git.openembedded.org/openembedded-core
   layers: meta
-  branch: zeus
+  branch: scarthgap
   revision: HEAD
 
   URI: git://git.openembedded.org/meta-openembedded
-  layers: meta-filesystems
-  branch: zeus
+  layers: meta-oe
+  branch: scarthgap
   revision: HEAD
 
   URI: git://git.openembedded.org/meta-openembedded
   layers: meta-python
-  branch: zeus
+  branch: scarthgap
+  revision: HEAD
+
+  URI: git://git.openembedded.org/meta-openembedded
+  layers: meta-networking
+  branch: scarthgap
+  revision: HEAD
+
+  URI: git://git.openembedded.org/meta-openembedded
+  layers: meta-filesystems
+  branch: scarthgap
   revision: HEAD
 
   URI: git://git.yoctoproject.org/meta-yocto
   layers: meta-poky
-  branch: zeus
+  branch: scarthgap
   revision: HEAD
 
 Patches
@@ -33,7 +43,6 @@ following maintainers.
 
 Maintainers:
             Hemanth Kumar <hemanth@alifsemi.com>
-            Jagadeesh Krishnanjanappa <jagadeesh@alifsemi.com>
 
 Table of Contents
 =================

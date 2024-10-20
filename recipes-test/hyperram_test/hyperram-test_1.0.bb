@@ -1,4 +1,4 @@
-# Copyright (C) 2023 Alif Semiconductor - All Rights Reserved.
+# Copyright (C) 2024 Alif Semiconductor - All Rights Reserved.
 # Use, distribution and modification of this code is permitted under the
 # terms stated in the Alif Semiconductor Software License Agreement
 #
@@ -8,11 +8,11 @@
 
 LICENSE="MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
-PR = "r4"
+PR = "r5"
 
 SRC_URI = "file://hyperram_test.c"
 PV = "1.0"
-S = "${WORKDIR}/"
+S = "${WORKDIR}"
 LDFLAGS = ""
 do_configure[noexec] = "1"
 
@@ -24,4 +24,4 @@ do_install() {
     install -m 755 -D ${S}/hyperram_test ${D}${bindir}/hyperram_test
 }
 
-FILES_${PN} = "${bindir}/hyperram_test"
+FILES:${PN} = "${bindir}/hyperram_test"

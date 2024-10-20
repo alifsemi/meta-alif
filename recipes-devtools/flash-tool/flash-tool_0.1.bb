@@ -1,3 +1,11 @@
+# Copyright (C) 2024 Alif Semiconductor - All Rights Reserved.
+# Use, distribution and modification of this code is permitted under the
+# terms stated in the Alif Semiconductor Software License Agreement
+#
+# You should have received a copy of the Alif Semiconductor Software
+# License Agreement with this file. If not, please write to:
+# contact@alifsemi.com, or visit: https://alifsemi.com/license
+
 Summary = "OSPI1 NOR flash programmer tool for A32"
 DESCRIPTION = "This tool programs OSPI1 NOR flash with the \
 given images from the Linux userspace"
