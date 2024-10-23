@@ -40,7 +40,7 @@ python do_dct_to_dts () {
                             inst_id = slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["id"]
                             for cnf_mst_iter in range(len(slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"])):
                                 if inst_id == "SPI0"  and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("SPI0_STATUS .*","SPI0_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
+                                    ker_dts_macro_file_write.write_text(re.sub("SPI0_STATUS .*","SPI0_STATUS \"disabled\"",ker_dts_macro_file_write.read_text()))
                                 if inst_id == "SPI1"  and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
                                     ker_dts_macro_file_write.write_text(re.sub("SPI1_STATUS .*","SPI1_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
                                 if inst_id == "SPI2"  and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
