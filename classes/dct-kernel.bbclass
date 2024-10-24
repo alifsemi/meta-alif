@@ -179,7 +179,13 @@ python do_dct_to_dts () {
     if bb.utils.contains('DISTRO_FEATURES', 'apss-nfs', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("ETH_STATUS .*","ETH_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-spi', True, False, d):
-        ker_dts_macro_file_write.write_text(re.sub("SPI(.*)_STATUS .*", "SPI\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        if bb.utils.contains_any('DISTRO_FEATURES', ['apss-sd-share', 'apss-sd-boot'], True, False, d):
+            ker_dts_macro_file_write.write_text(re.sub("SPI0_STATUS .*", "SPI0_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
+            ker_dts_macro_file_write.write_text(re.sub("SPI1_STATUS .*", "SPI1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+            ker_dts_macro_file_write.write_text(re.sub("SPI2_STATUS .*", "SPI2_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+            ker_dts_macro_file_write.write_text(re.sub("SPI3_STATUS .*", "SPI3_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        else:
+            ker_dts_macro_file_write.write_text(re.sub("SPI(.*)_STATUS .*", "SPI\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-uart', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("UART(.*)_STATUS .*", "UART\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-usb', True, False, d):
