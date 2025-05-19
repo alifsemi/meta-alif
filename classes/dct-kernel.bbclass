@@ -77,32 +77,9 @@ python do_dct_to_dts () {
 
                     if id == "UTIMER":
                         for inst_iter in range(len(slv_ph[slv_ph_idx]["modules"][iter]["instances"])):
-                            inst_id = slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["id"]
                             for cnf_mst_iter in range(len(slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"])):
-                                if inst_id == "UTIMER0" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
+                                if slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
                                     ker_dts_macro_file_write.write_text(re.sub("UTIMER0_STATUS .*","UTIMER0_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
-                                if inst_id == "UTIMER1" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("UTIMER1_STATUS .*","UTIMER1_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
-                                if inst_id == "UTIMER2" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("UTIMER2_STATUS .*","UTIMER2_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
-                                if inst_id == "UTIMER3" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("UTIMER3_STATUS .*","UTIMER3_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
-                                if inst_id == "UTIMER4" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("UTIMER4_STATUS .*","UTIMER4_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
-                                if inst_id == "UTIMER5" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("UTIMER5_STATUS .*","UTIMER5_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
-                                if inst_id == "UTIMER6" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("UTIMER6_STATUS .*","UTIMER6_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
-                                if inst_id == "UTIMER7" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("UTIMER7_STATUS .*","UTIMER7_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
-                                if inst_id == "UTIMER8" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("UTIMER8_STATUS .*","UTIMER8_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
-                                if inst_id == "UTIMER9" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("UTIMER9_STATUS .*","UTIMER9_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
-                                if inst_id == "UTIMER10" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("UTIMER10_STATUS .*","UTIMER10_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
-                                if inst_id == "UTIMER11" and slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    ker_dts_macro_file_write.write_text(re.sub("UTIMER11_STATUS .*","UTIMER11_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
 
                     if id == "SDMMC":
                         for inst_iter in range(len(slv_ph[slv_ph_idx]["modules"][iter]["instances"])):
@@ -193,7 +170,7 @@ python do_dct_to_dts () {
     if bb.utils.contains('DISTRO_FEATURES', 'apss-usb-host', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("HSUSB_STATUS .*", "HSUSB_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-utimer', True, False, d):
-        ker_dts_macro_file_write.write_text(re.sub("UTIMER(.*)_STATUS .*", "UTIMER\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("UTIMER0_STATUS .*", "UTIMER0_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains_any('DISTRO_FEATURES', ['apss-sd-share', 'apss-sd-boot'], True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("SDHCI_STATUS .*","SDHCI_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-dsi', True, False, d):

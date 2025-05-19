@@ -87,28 +87,6 @@ def calculate_distro_features_from_dct(d, res):
                             for cnf_mst_iter in range(len(slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"])):
                                 if slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
                                     dct_distro_features += " apss-utimer"
-                                if slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    dct_distro_features += " apss-utimer"
-                                if slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    dct_distro_features += " apss-utimer"
-                                if slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    dct_distro_features += " apss-utimer"
-                                if slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    dct_distro_features += " apss-utimer"
-                                if slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    dct_distro_features += " apss-utimer"
-                                if slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    dct_distro_features += " apss-utimer"
-                                if slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    dct_distro_features += " apss-utimer"
-                                if slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    dct_distro_features += " apss-utimer"
-                                if slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    dct_distro_features += " apss-utimer"
-                                if  slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    dct_distro_features += " apss-utimer"
-                                if  slv_ph[slv_ph_idx]["modules"][iter]["instances"][inst_iter]["configurables"]["masters"][cnf_mst_iter]["id"] == "A32":
-                                    dct_distro_features += " apss-utimer"
 
                     if id == "SDMMC":
                         for inst_iter in range(len(slv_ph[slv_ph_idx]["modules"][iter]["instances"])):
