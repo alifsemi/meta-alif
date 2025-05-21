@@ -214,6 +214,8 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("I2S3_STATUS .*", "I2S3_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-i2c', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("I2C0_STATUS .*", "I2C0_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-cmp', True, False, d):
+            ker_dts_macro_file_write.write_text(re.sub("CMP(.*)_STATUS .*", "CMP\\1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
 }
 
 python do_choose_uart () {
