@@ -53,6 +53,7 @@ ${@bb.utils.contains('DISTRO_FEATURES', 'apss-mhu', '${MHU_WDOG_PACKAGES}', '', 
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-hwsem', '${HWSEM_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-crc', '${CRC_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-pdm', '${PDM_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-utimer', '${UTIMER_PACKAGES}', '', d)} \
 "
 
 SD_PACKAGES = " util-linux-fdisk \
@@ -95,6 +96,10 @@ AV_PACKAGES = " \
 
 CRC_PACKAGES =  " \
 a32-linux-dd-testcases-crc \
+"
+
+UTIMER_PACKAGES =  " \
+a32-linux-dd-testcases-utimer \
 "
 
 PDM_PACKAGES = " \
