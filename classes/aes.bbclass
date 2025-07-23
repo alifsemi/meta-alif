@@ -19,9 +19,9 @@ aes_enc_rootfs() {
  if [ "${AES_EN}" = "1" ] ; then
     for iter in ${IMAGE_FSTYPES} ; do
         if [ "$iter" = "cramfs-xip" ] ; then
-            ${STAGING_BINDIR_NATIVE}/python3-native/python3 ${ALIFBASE}/lib/CSPI_AES128_ECB.py -i ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter -o ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter.enc -k ${AES_ENC_KEY} -d 1
-            mv ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter.orig
-            mv ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter.enc ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$iter
+            ${STAGING_BINDIR_NATIVE}/python3-native/python3 ${ALIFBASE}/lib/CSPI_AES128_ECB.py -i ${IMGDEPLOYDIR}/${IMAGE_NAME}.$iter -o ${IMGDEPLOYDIR}/${IMAGE_NAME}.$iter.enc -k ${AES_ENC_KEY} -d 1
+            mv ${IMGDEPLOYDIR}/${IMAGE_NAME}.$iter ${IMGDEPLOYDIR}/${IMAGE_NAME}.$iter.orig
+            mv ${IMGDEPLOYDIR}/${IMAGE_NAME}.$iter.enc ${IMGDEPLOYDIR}/${IMAGE_NAME}.$iter
         fi
     done
  fi
