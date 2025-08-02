@@ -222,7 +222,7 @@ python do_dct_to_dts () {
             ker_dts_macro_file_write.write_text(re.sub("MEM_HYPER_STATUS .*", "MEM_HYPER_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
             ker_dts_macro_file_write.write_text(re.sub("MEM_STITCH_STATUS .*", "MEM_STITCH_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
             ker_dts_macro_file_write.write_text(re.sub("MEM_HYP_STITCH_STATUS .*", "MEM_HYP_STITCH_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
-    if bb.utils.contains('HYPRAM_STITCH','1', True, False, d):
+    if bb.utils.contains('HYPRAM_ONLY','0', True, False, d):
             ker_dts_macro_file_write.write_text(re.sub("MEM_HYP_STITCH_STATUS .*", "MEM_HYP_STITCH_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
             ker_dts_macro_file_write.write_text(re.sub("MEM_HYPER_STATUS .*", "MEM_HYPER_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
             ker_dts_macro_file_write.write_text(re.sub("MEM_STITCH_STATUS .*", "MEM_STITCH_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
