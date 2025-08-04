@@ -212,6 +212,7 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("ADC120_STATUS .*", "ADC120_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-i2s', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("I2S3_STATUS .*", "I2S3_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("I2C1_STATUS .*", "I2C1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-i2c', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("I2C0_STATUS .*", "I2C0_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-cmp', True, False, d):
