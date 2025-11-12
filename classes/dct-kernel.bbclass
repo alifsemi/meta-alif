@@ -263,8 +263,18 @@ python do_choose_uart () {
         ker_dts_macro_file_write.write_text(re.sub("UART2_STATUS .*", "UART2_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
 }
 
+python do_disable_smp () {
+    import re
+    from pathlib import Path
+    ker_dts_macro_file = d.getVar("S") + d.getVar("DTS_MACRO_FILE") or ""
+    ker_dts_macro_file_write = Path(ker_dts_macro_file)
+    if bb.utils.contains('SMP', '0', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("CPU1_STATUS .*", "CPU1_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
+}
+
 addtask dct_to_dts after do_configure before do_compile
 addtask choose_uart after do_configure before do_compile
+addtask disable_smp after do_configure before do_compile
 
 def get_dct_json_checksum_file(d):
     dct_json_file = d.getVar("DCT_JSON_FILE") or ""
