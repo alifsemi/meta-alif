@@ -1,0 +1,433 @@
+From a1908e2d84645bc7de8c0cbac41be928b215ae51 Mon Sep 17 00:00:00 2001
+From: Hemanth Kumar <hemanth@alifsemi.com>
+Date: Sun, 30 Nov 2025 20:16:07 +0530
+Subject: [PATCH] tensorflow-lite: Add support build for Cortex-A32
+
+correct_sizeof_long_skip_unsupported_files.patch: Builds the XNNPACK twice.
+The first build fails but after adding the fix
+[disable_compiling_unsupported_arch_files_for_cortexa32.patch], the XNNPACK build pass.
+
+Signed-off-by: Hemanth Kumar <hemanth@alifsemi.com>
+---
+ ...t_sizeof_long_skip_unsupported_files.patch |  32 +++++
+ ...unsupported_arch_files_for_cortexa32.patch | 125 ++++++++++++++++++
+ ...ink_libexecinfo_aarch32_armv8a_build.patch |  10 ++
+ .../set_correct_default_python_version.patch  |  13 ++
+ .../files/set_correct_sizeof_long.patch       |  13 ++
+ .../support_aarch32_armv8a_build_1.patch      |  44 ++++++
+ .../support_aarch32_armv8a_build_2.patch      |  20 +++
+ .../support_aarch32_armv8a_build_3.patch      |  24 ++++
+ .../support_aarch32_armv8a_build_4.patch      |  11 ++
+ .../tensorflow/tensorflow-lite_%.bbappend     |  45 +++++++
+ 10 files changed, 337 insertions(+)
+ create mode 100644 recipes-framework/tensorflow/files/correct_sizeof_long_skip_unsupported_files.patch
+ create mode 100644 recipes-framework/tensorflow/files/disable_compiling_unsupported_arch_files_for_cortexa32.patch
+ create mode 100644 recipes-framework/tensorflow/files/link_libexecinfo_aarch32_armv8a_build.patch
+ create mode 100644 recipes-framework/tensorflow/files/set_correct_default_python_version.patch
+ create mode 100644 recipes-framework/tensorflow/files/set_correct_sizeof_long.patch
+ create mode 100644 recipes-framework/tensorflow/files/support_aarch32_armv8a_build_1.patch
+ create mode 100644 recipes-framework/tensorflow/files/support_aarch32_armv8a_build_2.patch
+ create mode 100644 recipes-framework/tensorflow/files/support_aarch32_armv8a_build_3.patch
+ create mode 100644 recipes-framework/tensorflow/files/support_aarch32_armv8a_build_4.patch
+ create mode 100644 recipes-framework/tensorflow/tensorflow-lite_%.bbappend
+
+diff --git a/recipes-framework/tensorflow/files/correct_sizeof_long_skip_unsupported_files.patch b/recipes-framework/tensorflow/files/correct_sizeof_long_skip_unsupported_files.patch
+new file mode 100644
+index 0000000..12c30e9
+--- /dev/null
++++ b/recipes-framework/tensorflow/files/correct_sizeof_long_skip_unsupported_files.patch
+@@ -0,0 +1,32 @@
++Disable compiling unsupported architecture files for Cortex-A32
++
++The bazel/output_base/external/XNNPACK directory gets populated during the
++build hence there is no way to apply the
++disable_compiling_unsupported_arch_files_for_cortexa32.patch before the build.
++So apply it after the build fails.
++
++Upstream-Status: Inappropriate [oe specific]
++Signed-off-by: Hemanth Kumar <hemanth@alifsemi.com>
++diff --git a/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh b/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh
++index 5fbaed56c28..325a2002bc9 100755
++--- a/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh
+++++ b/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh
++@@ -102,6 +102,18 @@ case "${TENSORFLOW_TARGET}" in
++     ;;
++ esac
++
+++sed -i "s:#define SIZEOF_LONG 8:#define SIZEOF_LONG 4:g" ${TENSORFLOW_DIR}/.././bazel/output_base/external/python_x86_64-unknown-linux-gnu/include/*/pyconfig.h
+++
+++bazel ${BAZEL_STARTUP_OPTIONS} build -c opt -s --config=monolithic --config=noaws --config=nogcp --config=nohdfs --config=nonccl \
+++  ${BAZEL_FLAGS} ${CUSTOM_BAZEL_FLAGS} //tensorflow/lite/python/interpreter_wrapper:_pywrap_tensorflow_interpreter_wrapper || true
+++
+++if [ ! -e ${TENSORFLOW_DIR}/../bazel/output_base/external/XNNPACK/.done ] ; then
+++    pushd ${TENSORFLOW_DIR}/..
+++    patch -p1 < disable_compiling_unsupported_arch_files_for_cortexa32.patch
+++    touch ${TENSORFLOW_DIR}/../bazel/output_base/external/XNNPACK/.done
+++    popd
+++fi
+++
++ bazel ${BAZEL_STARTUP_OPTIONS} build -c opt -s --config=monolithic --config=noaws --config=nogcp --config=nohdfs --config=nonccl \
++   ${BAZEL_FLAGS} ${CUSTOM_BAZEL_FLAGS} //tensorflow/lite/python/interpreter_wrapper:_pywrap_tensorflow_interpreter_wrapper
++ cp "${TENSORFLOW_DIR}/bazel-bin/tensorflow/lite/python/interpreter_wrapper/_pywrap_tensorflow_interpreter_wrapper${LIBRARY_EXTENSION}" \
+diff --git a/recipes-framework/tensorflow/files/disable_compiling_unsupported_arch_files_for_cortexa32.patch b/recipes-framework/tensorflow/files/disable_compiling_unsupported_arch_files_for_cortexa32.patch
+new file mode 100644
+index 0000000..aa1e242
+--- /dev/null
++++ b/recipes-framework/tensorflow/files/disable_compiling_unsupported_arch_files_for_cortexa32.patch
+@@ -0,0 +1,125 @@
++--- a/bazel/output_base/external/XNNPACK/src/configs/dwconv-config.c	2024-01-16 11:48:24.000000000 +0530
+++++ b/bazel/output_base/external/XNNPACK/src/configs/dwconv-config.c	2025-11-30 19:47:15.462294543 +0530
++@@ -720,7 +720,9 @@ static void init_qs8_qc8w_dwconv_config(
++     assert(hardware_config != NULL);
++     if (hardware_config->use_arm_neon) {
++       if (hardware_config->use_arm_neon_v8) {
+++#if 0 //FIXME: Cortex-A35 reference does not present for Cortex-A32
++         qs8_qc8w_dwconv_config[0].minmax.unipass = (xnn_dwconv_unipass_ukernel_fn) xnn_qs8_qc8w_dwconv_minmax_fp32_ukernel_3p16c__asm_aarch32_neonv8_mla8_cortex_a35;
+++#endif
++         qs8_qc8w_dwconv_config[0].init.qs8_qc8w = xnn_init_qs8_qc8w_conv_minmax_fp32_neonv8_params;
++         qs8_qc8w_dwconv_config[0].channel_tile = 16;
++         qs8_qc8w_dwconv_config[0].channel_subtile = 16;
++--- a/bazel/output_base/external/XNNPACK/CMakeLists.txt	2024-01-16 11:48:24.000000000 +0530
+++++ b/bazel/output_base/external/XNNPACK/CMakeLists.txt	2025-10-29 22:25:18.248385200 +0530
++@@ -81,13 +81,13 @@ ELSE()
++ ENDIF()
++
++ # --- [ Processor-specific options
++-OPTION(XNNPACK_ENABLE_ARM_FP16_SCALAR "Build XNNPACK with ARM FP16 (FP16 data processing) scalar micro-kernels" ON)
++-OPTION(XNNPACK_ENABLE_ARM_FP16_VECTOR "Build XNNPACK with ARM FP16 (FP16 data processing) vector micro-kernels" ON)
++-OPTION(XNNPACK_ENABLE_ARM_BF16 "Build XNNPACK with ARM BF16 (BFLOAT16) micro-kernels" ON)
++-OPTION(XNNPACK_ENABLE_ARM_DOTPROD "Build XNNPACK with ARM DotProd (integer dot product) micro-kernels" ON)
++-OPTION(XNNPACK_ENABLE_ARM_I8MM "Build XNNPACK with ARM I8MM (8-bit integer matrix multiply accumulate) micro-kernels" ON)
++-OPTION(XNNPACK_ENABLE_RISCV_VECTOR "Build XNNPACK with RISC-V Vector micro-kernels" ON)
++-OPTION(XNNPACK_ENABLE_VSX "Build XNNPACK with VSX Vector micro-kernels for Power" ON)
+++OPTION(XNNPACK_ENABLE_ARM_FP16_SCALAR "Build XNNPACK with ARM FP16 (FP16 data processing) scalar micro-kernels" OFF)
+++OPTION(XNNPACK_ENABLE_ARM_FP16_VECTOR "Build XNNPACK with ARM FP16 (FP16 data processing) vector micro-kernels" OFF)
+++OPTION(XNNPACK_ENABLE_ARM_BF16 "Build XNNPACK with ARM BF16 (BFLOAT16) micro-kernels" OFF)
+++OPTION(XNNPACK_ENABLE_ARM_DOTPROD "Build XNNPACK with ARM DotProd (integer dot product) micro-kernels" OFF)
+++OPTION(XNNPACK_ENABLE_ARM_I8MM "Build XNNPACK with ARM I8MM (8-bit integer matrix multiply accumulate) micro-kernels" OFF)
+++OPTION(XNNPACK_ENABLE_RISCV_VECTOR "Build XNNPACK with RISC-V Vector micro-kernels" OFF)
+++OPTION(XNNPACK_ENABLE_VSX "Build XNNPACK with VSX Vector micro-kernels for Power" OFF)
++ SET(XNNPACK_AVXVNNI_DEFAULT ON CACHE INTERNAL "Default value to enable AVX-VNNI in x86 builds.")
++ IF(CMAKE_C_COMPILER_ID STREQUAL "GNU")
++   IF(CMAKE_C_COMPILER_VERSION VERSION_LESS "11")
++@@ -104,9 +104,9 @@ IF(XNNPACK_BUILD_TESTS)
++ ENDIF()
++
++
++-ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_FP16_VECTOR=$<BOOL:${XNNPACK_ENABLE_ARM_FP16_VECTOR}>")
++-ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_FP16_SCALAR=$<BOOL:${XNNPACK_ENABLE_ARM_FP16_SCALAR}>")
++-ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_BF16=$<BOOL:${XNNPACK_ENABLE_ARM_BF16}>")
+++ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_FP16_VECTOR=0")
+++ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_FP16_SCALAR=0")
+++ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_BF16=0")
++ ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_DOTPROD=$<BOOL:${XNNPACK_ENABLE_ARM_DOTPROD}>")
++ ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_I8MM=$<BOOL:${XNNPACK_ENABLE_ARM_I8MM}>")
++ ADD_COMPILE_DEFINITIONS("XNN_ENABLE_RISCV_VECTOR=$<BOOL:${XNNPACK_ENABLE_RISCV_VECTOR}>")
++@@ -318,7 +319,6 @@ SET(XNNPACK_SRCS
++   src/configs/experiments-config.c
++   src/configs/gavgpool-config.c
++   src/configs/gavgpool-cw-config.c
++-  src/configs/gemm-config.c
++   src/configs/ibilinear-chw-config.c
++   src/configs/ibilinear-config.c
++   src/configs/lut32norm-config.c
++--- a/bazel/output_base/external/XNNPACK/BUILD.bazel	2024-01-16 11:48:24.000000000 +0530
+++++ b/bazel/output_base/external/XNNPACK/BUILD.bazel	2025-11-30 17:51:01.940609790 +0530
++@@ -2759,7 +2759,6 @@ xnnpack_aggregate_library(
++         ":neonfp16_bench_microkernels",
++         ":neonfma_bench_microkernels",
++         ":neonv8_bench_microkernels",
++-        ":asm_microkernels",
++     ],
++     aarch64_deps = [
++         ":neon_bench_microkernels",
++@@ -2769,19 +2768,19 @@ xnnpack_aggregate_library(
++         ":asm_microkernels",
++     ],
++     defines = select({
++-        ":arm_fp16_scalar_enabled": ["XNN_ENABLE_ARM_FP16_SCALAR=1"],
+++        ":arm_fp16_scalar_enabled": ["XNN_ENABLE_ARM_FP16_SCALAR=0"],
++         "//conditions:default": ["XNN_ENABLE_ARM_FP16_SCALAR=0"],
++     }) + select({
++-        ":arm_fp16_vector_enabled": ["XNN_ENABLE_ARM_FP16_VECTOR=1"],
+++        ":arm_fp16_vector_enabled": ["XNN_ENABLE_ARM_FP16_VECTOR=0"],
++         "//conditions:default": ["XNN_ENABLE_ARM_FP16_VECTOR=0"],
++     }) + select({
++-        ":arm_bf16_enabled": ["XNN_ENABLE_ARM_BF16=1"],
+++        ":arm_bf16_enabled": ["XNN_ENABLE_ARM_BF16=0"],
++         "//conditions:default": ["XNN_ENABLE_ARM_BF16=0"],
++     }) + select({
++-        ":arm_dotprod_enabled": ["XNN_ENABLE_ARM_DOTPROD=1"],
+++        ":arm_dotprod_enabled": ["XNN_ENABLE_ARM_DOTPROD=0"],
++         "//conditions:default": ["XNN_ENABLE_ARM_DOTPROD=0"],
++     }) + select({
++-        ":arm_i8mm_enabled": ["XNN_ENABLE_ARM_I8MM=1"],
+++        ":arm_i8mm_enabled": ["XNN_ENABLE_ARM_I8MM=0"],
++         "//conditions:default": ["XNN_ENABLE_ARM_I8MM=0"],
++     }) + select({
++         ":riscv_vector_enabled": ["XNN_ENABLE_RISCV_VECTOR=1"],
++@@ -2859,7 +2858,6 @@ xnnpack_aggregate_library(
++         ":neonfp16_prod_microkernels",
++         ":neonfma_prod_microkernels",
++         ":neonv8_prod_microkernels",
++-        ":asm_microkernels",
++     ],
++     aarch64_deps = [
++         ":neon_prod_microkernels",
++@@ -2951,7 +2949,6 @@ xnnpack_aggregate_library(
++         ":neonfp16_test_microkernels",
++         ":neonfma_test_microkernels",
++         ":neonv8_test_microkernels",
++-        ":asm_microkernels",
++     ],
++     aarch64_deps = [
++         ":neon_test_microkernels",
++@@ -3124,7 +3121,7 @@ xnnpack_cc_library(
++ cc_library(
++     name = "enable_assembly",
++     defines = select({
++-        ":assembly_enabled": ["XNN_ENABLE_ASSEMBLY=1"],
+++        ":assembly_enabled": ["XNN_ENABLE_ASSEMBLY=0"],
++         "//conditions:default": ["XNN_ENABLE_ASSEMBLY=0"],
++     }),
++     visibility = xnnpack_visibility(),
++@@ -3167,7 +3164,7 @@ cc_library(
++ cc_library(
++     name = "enable_dwconv_multipass",
++     defines = select({
++-        ":dwconv_multipass_enabled": ["XNN_ENABLE_DWCONV_MULTIPASS=1"],
+++        ":dwconv_multipass_enabled": ["XNN_ENABLE_DWCONV_MULTIPASS=0"],
++         "//conditions:default": ["XNN_ENABLE_DWCONV_MULTIPASS=0"],
++     }),
++ )
+diff --git a/recipes-framework/tensorflow/files/link_libexecinfo_aarch32_armv8a_build.patch b/recipes-framework/tensorflow/files/link_libexecinfo_aarch32_armv8a_build.patch
+new file mode 100644
+index 0000000..4a3e3e4
+--- /dev/null
++++ b/recipes-framework/tensorflow/files/link_libexecinfo_aarch32_armv8a_build.patch
+@@ -0,0 +1,10 @@
++--- a/cc_config.bzl.tpl.orig	2025-11-30 11:50:27.929807878 +0530
+++++ b/cc_config.bzl.tpl	2025-11-30 13:38:09.677013006 +0530
++@@ -262,6 +262,7 @@ def _impl(ctx):
++                     flag_group(
++                         flags = [
++                             "-lstdc++",
+++                            "-lexecinfo",
++                             "-Wl,-z,relro,-z,now",
++                             "-no-canonical-prefixes",
++                             "-pass-exit-codes",
+diff --git a/recipes-framework/tensorflow/files/set_correct_default_python_version.patch b/recipes-framework/tensorflow/files/set_correct_default_python_version.patch
+new file mode 100644
+index 0000000..01ba188
+--- /dev/null
++++ b/recipes-framework/tensorflow/files/set_correct_default_python_version.patch
+@@ -0,0 +1,13 @@
++diff --git a/tensorflow/tools/toolchains/python/python_repo.bzl b/tensorflow/tools/toolchains/python/python_repo.bzl
++index 47fe64d7b7b..8c32db206fd 100644
++--- a/tensorflow/tools/toolchains/python/python_repo.bzl
+++++ b/tensorflow/tools/toolchains/python/python_repo.bzl
++@@ -8,7 +8,7 @@ To set wheel name, add "--repo_env=WHEEL_NAME=tensorflow_cpu"
++ """
++
++ VERSIONS = ["3.9", "3.10", "3.11", "3.12"]
++-DEFAULT_VERSION = "3.11"
+++DEFAULT_VERSION = "3.12"
++ WARNING = """
++ TF_PYTHON_VERSION environment variable was not set correctly; using Python {}.
++
+diff --git a/recipes-framework/tensorflow/files/set_correct_sizeof_long.patch b/recipes-framework/tensorflow/files/set_correct_sizeof_long.patch
+new file mode 100644
+index 0000000..1f3869b
+--- /dev/null
++++ b/recipes-framework/tensorflow/files/set_correct_sizeof_long.patch
+@@ -0,0 +1,13 @@
++diff --git a/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh b/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh
++index 5fbaed56c28..b95f57746ba 100755
++--- a/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh
+++++ b/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh
++@@ -102,6 +102,8 @@ case "${TENSORFLOW_TARGET}" in
++     ;;
++ esac
++
+++sed -i "s:#define SIZEOF_LONG 8:#define SIZEOF_LONG 4:g" ${TENSORFLOW_DIR}/../bazel/output_base/external/python_x86_64-unknown-linux-gnu/include/*/pyconfig.h
+++
++ bazel ${BAZEL_STARTUP_OPTIONS} build -c opt -s --config=monolithic --config=noaws --config=nogcp --config=nohdfs --config=nonccl \
++   ${BAZEL_FLAGS} ${CUSTOM_BAZEL_FLAGS} //tensorflow/lite/python/interpreter_wrapper:_pywrap_tensorflow_interpreter_wrapper
++ cp "${TENSORFLOW_DIR}/bazel-bin/tensorflow/lite/python/interpreter_wrapper/_pywrap_tensorflow_interpreter_wrapper${LIBRARY_EXTENSION}" \
+diff --git a/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_1.patch b/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_1.patch
+new file mode 100644
+index 0000000..43e647f
+--- /dev/null
++++ b/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_1.patch
+@@ -0,0 +1,44 @@
++There is no mallinfo in Musl libc ref: https://github.com/google/llvm-bazel/issues/132
++--- a/tensorflow/lite/kernels/internal/BUILD.orig	2025-11-30 14:06:20.865837516 +0530
+++++ b/tensorflow/lite/kernels/internal/BUILD	2025-11-30 14:07:09.912110860 +0530
++@@ -464,15 +464,6 @@ selects.config_setting_group(
++ cc_library(
++     name = "optimized_4bit",
++     srcs = select({
++-        ":x86_64_any": [
++-            "optimized/4bit/sse_fully_connected.cc",
++-        ],
++-        ":aarch64_any": [
++-            "optimized/4bit/neon_fully_connected.cc",
++-            "optimized/4bit/neon_fully_connected_aarch64_nosdot.cc",
++-            "optimized/4bit/neon_fully_connected_aarch64_sdot.cc",
++-            "optimized/4bit/neon_fully_connected_impl.h",
++-        ],
++         ":arm32_any": [
++             "optimized/4bit/neon_fully_connected.cc",
++             "optimized/4bit/neon_fully_connected_arm32.cc",
++@@ -488,13 +479,6 @@ cc_library(
++         "optimized/4bit/fully_connected_reference.h",
++         "optimized/fully_connected_4bit.h",
++     ] + select({
++-        ":x86_64_any": [
++-            "optimized/4bit/sse_fully_connected.h",
++-            "optimized/4bit/sse_fully_connected_impl.h",
++-        ],
++-        ":aarch64_any": [
++-            "optimized/4bit/neon_fully_connected.h",
++-        ],
++         ":arm32_any": [
++             "optimized/4bit/neon_fully_connected.h",
++         ],
++@@ -503,10 +487,6 @@ cc_library(
++     compatible_with = get_compatible_with_portable(),
++     copts = tflite_copts() + NEON_FLAGS_IF_APPLICABLE,
++     defines = select({
++-        ":x86_64_any": ["FC_4BIT_SSE"],
++-        ":aarch64_any": [
++-            "FC_4BIT_NEON",
++-        ],
++         ":arm32_any": [
++             "FC_4BIT_NEON",
++         ],
+diff --git a/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_2.patch b/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_2.patch
+new file mode 100644
+index 0000000..59ea850
+--- /dev/null
++++ b/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_2.patch
+@@ -0,0 +1,20 @@
++--- git/tensorflow/lite/tools/command_line_flags.h.org	2025-11-30 14:14:22.545000797 +0530
+++++ git/tensorflow/lite/tools/command_line_flags.h	2025-11-30 14:14:44.961475609 +0530
++@@ -18,6 +18,7 @@ limitations under the License.
++
++ #include <functional>
++ #include <string>
+++#include <cstdint>
++ #include <vector>
++
++ namespace tflite {
++--- git/third_party/xla/third_party/tsl/tsl/util/stats_calculator.h.orig	2025-11-30 14:16:52.575815399 +0530
+++++ git/third_party/xla/third_party/tsl/tsl/util/stats_calculator.h	2025-11-30 14:17:52.554742683 +0530
++@@ -25,6 +25,7 @@ limitations under the License.
++ #include <sstream>
++ #include <string>
++ #include <vector>
+++#include <cstdint>
++
++ #include "tsl/util/stat_summarizer_options.h"
++
+diff --git a/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_3.patch b/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_3.patch
+new file mode 100644
+index 0000000..6f33e14
+--- /dev/null
++++ b/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_3.patch
+@@ -0,0 +1,24 @@
++--- bazel/output_base/external/flatbuffers/include/flatbuffers/util.h.orig	2025-11-30 15:24:47.817170646 +0530
+++++ bazel/output_base/external/flatbuffers/include/flatbuffers/util.h	2025-11-30 15:24:26.070916275 +0530
++@@ -225,10 +225,17 @@ inline std::string IntToStringHex(int i,
++     #define __strtod_impl(s, pe) _strtod_l(s, pe, ClassicLocale::Get())
++     #define __strtof_impl(s, pe) _strtof_l(s, pe, ClassicLocale::Get())
++   #else
++-    #define __strtoull_impl(s, pe, b) strtoull_l(s, pe, b, ClassicLocale::Get())
++-    #define __strtoll_impl(s, pe, b) strtoll_l(s, pe, b, ClassicLocale::Get())
++-    #define __strtod_impl(s, pe) strtod_l(s, pe, ClassicLocale::Get())
++-    #define __strtof_impl(s, pe) strtof_l(s, pe, ClassicLocale::Get())
+++    #ifdef __GLIBC__
+++       #define __strtoull_impl(s, pe, b) strtoull_l(s, pe, b, ClassicLocale::Get())
+++       #define __strtoll_impl(s, pe, b) strtoll_l(s, pe, b, ClassicLocale::Get())
+++       #define __strtod_impl(s, pe) strtod_l(s, pe, ClassicLocale::Get())
+++       #define __strtof_impl(s, pe) strtof_l(s, pe, ClassicLocale::Get())
+++    #else
+++       #define __strtoull_impl(s, pe, b) strtoull(s, pe, b)
+++       #define __strtoll_impl(s, pe, b) strtoll(s, pe, b)
+++       #define __strtod_impl(s, pe) strtod(s, pe)
+++       #define __strtof_impl(s, pe) strtof(s, pe)
+++    #endif
++   #endif
++ #else
++   #define __strtod_impl(s, pe) strtod(s, pe)
+diff --git a/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_4.patch b/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_4.patch
+new file mode 100644
+index 0000000..f0f3426
+--- /dev/null
++++ b/recipes-framework/tensorflow/files/support_aarch32_armv8a_build_4.patch
+@@ -0,0 +1,11 @@
++--- git/tensorflow/lite/kernels/internal/optimized/neon_tensor_utils.cc.orig	2025-11-30 16:28:54.212116014 +0530
+++++ git/tensorflow/lite/kernels/internal/optimized/neon_tensor_utils.cc	2025-11-30 16:29:26.004285621 +0530
++@@ -2347,7 +2347,7 @@ void NeonVectorScalarMultiply(const int8
++ // TODO(b/185850916): Consider changing the rounding stragey from "ties to away"
++ // to "ties to even" since vcvtnq_s32_f32 is generally more available.
++ inline int32x4_t RoundToNearest(const float32x4_t input) {
++-#if __ARM_ARCH >= 8
+++#if __ARM_ARCH >= 8 && !defined(__arm__)
++   return vcvtaq_s32_f32(input);
++ #else
++   static const float32x4_t zero_val_dup = vdupq_n_f32(0.0f);
+diff --git a/recipes-framework/tensorflow/tensorflow-lite_%.bbappend b/recipes-framework/tensorflow/tensorflow-lite_%.bbappend
+new file mode 100644
+index 0000000..df1754f
+--- /dev/null
++++ b/recipes-framework/tensorflow/tensorflow-lite_%.bbappend
+@@ -0,0 +1,45 @@
++PR .= ".1"
++
++FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
++SRC_URI += "file://link_libexecinfo_aarch32_armv8a_build.patch;patchdir=.. \
++            file://set_correct_default_python_version.patch \
++            file://support_aarch32_armv8a_build_1.patch \
++            file://support_aarch32_armv8a_build_2.patch \
++            file://support_aarch32_armv8a_build_3.patch;apply=no \
++            file://support_aarch32_armv8a_build_4.patch \
++            file://correct_sizeof_long_skip_unsupported_files.patch \
++            file://disable_compiling_unsupported_arch_files_for_cortexa32.patch;apply=no"
++
++DEPENDS += "libexecinfo"
++
++TF_ARGS_EXTRA ?= "--config=elinux_armhf"
++
++bazel_do_configure:append:armv8a () {
++    cat >> "${S}/bazelrc" <<-EOF
++
++build --conlyopt=-D__NO_MALLINFO__ --cxxopt=-D__NO_MALLINFO__
++build --conlyopt=-mfpu=neon-fp-armv8 --cxxopt=-mfpu=neon-fp-armv8 --linkopt=-mfpu=neon-fp-armv8
++
++EOF
++}
++
++do_compile:prepend:armv8a () {
++    export CT_NAME=$(echo ${HOST_PREFIX} | rev | cut -c 2- | rev)
++    unset CC
++
++    ${BAZEL} build \
++        ${CUSTOM_BAZEL_FLAGS} \
++        --copt -DTF_LITE_DISABLE_X86_NEON --copt -DMESA_EGL_NO_X11_HEADERS \
++        --define tflite_with_xnnpack=false \
++        --repo_env=TF_PYTHON_VERSION=3.12 @flatbuffers//src:distribution
++
++    if [ ! -e ${WORKDIR}/bazel/output_base/external/flatbuffers/.done ] ; then
++        pushd ${WORKDIR}
++        patch -p0 < support_aarch32_armv8a_build_3.patch
++        touch ${WORKDIR}/bazel/output_base/external/flatbuffers/.done
++        popd
++    fi
++
++}
++
++COMPATIBLE_HOST:armv8a = ""
+--
+2.43.0
+

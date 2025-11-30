@@ -1,0 +1,134 @@
+Avoid undefined reference to Cortex-A35 while compiling for Cortex-A32
+
+Also, skip compiling src/configs/gemm-config.c, asm_microkernels,
+files enabled with XNN_ENABLE_ARM_FP16_VECTOR, XNN_ENABLE_ARM_FP16_SCALAR,
+and XNN_ENABLE_ARM_BF16 macros as they try to compile AArch64 assembly files/codes.
+
+Upstream-Status: Inappropriate [oe specific]
+
+Signed-off-by: Hemanth Kumar <hemanth@alifsemi.com>
+--- a/bazel/output_base/external/XNNPACK/src/configs/dwconv-config.c	2024-01-16 11:48:24.000000000 +0530
++++ b/bazel/output_base/external/XNNPACK/src/configs/dwconv-config.c	2025-11-30 19:47:15.462294543 +0530
+@@ -720,7 +720,9 @@ static void init_qs8_qc8w_dwconv_config(
+     assert(hardware_config != NULL);
+     if (hardware_config->use_arm_neon) {
+       if (hardware_config->use_arm_neon_v8) {
++#if 0 //FIXME: Cortex-A35 reference does not present for Cortex-A32
+         qs8_qc8w_dwconv_config[0].minmax.unipass = (xnn_dwconv_unipass_ukernel_fn) xnn_qs8_qc8w_dwconv_minmax_fp32_ukernel_3p16c__asm_aarch32_neonv8_mla8_cortex_a35;
++#endif
+         qs8_qc8w_dwconv_config[0].init.qs8_qc8w = xnn_init_qs8_qc8w_conv_minmax_fp32_neonv8_params;
+         qs8_qc8w_dwconv_config[0].channel_tile = 16;
+         qs8_qc8w_dwconv_config[0].channel_subtile = 16;
+--- a/bazel/output_base/external/XNNPACK/CMakeLists.txt	2024-01-16 11:48:24.000000000 +0530
++++ b/bazel/output_base/external/XNNPACK/CMakeLists.txt	2025-10-29 22:25:18.248385200 +0530
+@@ -81,13 +81,13 @@ ELSE()
+ ENDIF()
+
+ # --- [ Processor-specific options
+-OPTION(XNNPACK_ENABLE_ARM_FP16_SCALAR "Build XNNPACK with ARM FP16 (FP16 data processing) scalar micro-kernels" ON)
+-OPTION(XNNPACK_ENABLE_ARM_FP16_VECTOR "Build XNNPACK with ARM FP16 (FP16 data processing) vector micro-kernels" ON)
+-OPTION(XNNPACK_ENABLE_ARM_BF16 "Build XNNPACK with ARM BF16 (BFLOAT16) micro-kernels" ON)
+-OPTION(XNNPACK_ENABLE_ARM_DOTPROD "Build XNNPACK with ARM DotProd (integer dot product) micro-kernels" ON)
+-OPTION(XNNPACK_ENABLE_ARM_I8MM "Build XNNPACK with ARM I8MM (8-bit integer matrix multiply accumulate) micro-kernels" ON)
+-OPTION(XNNPACK_ENABLE_RISCV_VECTOR "Build XNNPACK with RISC-V Vector micro-kernels" ON)
+-OPTION(XNNPACK_ENABLE_VSX "Build XNNPACK with VSX Vector micro-kernels for Power" ON)
++OPTION(XNNPACK_ENABLE_ARM_FP16_SCALAR "Build XNNPACK with ARM FP16 (FP16 data processing) scalar micro-kernels" OFF)
++OPTION(XNNPACK_ENABLE_ARM_FP16_VECTOR "Build XNNPACK with ARM FP16 (FP16 data processing) vector micro-kernels" OFF)
++OPTION(XNNPACK_ENABLE_ARM_BF16 "Build XNNPACK with ARM BF16 (BFLOAT16) micro-kernels" OFF)
++OPTION(XNNPACK_ENABLE_ARM_DOTPROD "Build XNNPACK with ARM DotProd (integer dot product) micro-kernels" OFF)
++OPTION(XNNPACK_ENABLE_ARM_I8MM "Build XNNPACK with ARM I8MM (8-bit integer matrix multiply accumulate) micro-kernels" OFF)
++OPTION(XNNPACK_ENABLE_RISCV_VECTOR "Build XNNPACK with RISC-V Vector micro-kernels" OFF)
++OPTION(XNNPACK_ENABLE_VSX "Build XNNPACK with VSX Vector micro-kernels for Power" OFF)
+ SET(XNNPACK_AVXVNNI_DEFAULT ON CACHE INTERNAL "Default value to enable AVX-VNNI in x86 builds.")
+ IF(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+   IF(CMAKE_C_COMPILER_VERSION VERSION_LESS "11")
+@@ -104,9 +104,9 @@ IF(XNNPACK_BUILD_TESTS)
+ ENDIF()
+
+
+-ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_FP16_VECTOR=$<BOOL:${XNNPACK_ENABLE_ARM_FP16_VECTOR}>")
+-ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_FP16_SCALAR=$<BOOL:${XNNPACK_ENABLE_ARM_FP16_SCALAR}>")
+-ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_BF16=$<BOOL:${XNNPACK_ENABLE_ARM_BF16}>")
++ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_FP16_VECTOR=0")
++ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_FP16_SCALAR=0")
++ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_BF16=0")
+ ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_DOTPROD=$<BOOL:${XNNPACK_ENABLE_ARM_DOTPROD}>")
+ ADD_COMPILE_DEFINITIONS("XNN_ENABLE_ARM_I8MM=$<BOOL:${XNNPACK_ENABLE_ARM_I8MM}>")
+ ADD_COMPILE_DEFINITIONS("XNN_ENABLE_RISCV_VECTOR=$<BOOL:${XNNPACK_ENABLE_RISCV_VECTOR}>")
+@@ -318,7 +319,6 @@ SET(XNNPACK_SRCS
+   src/configs/experiments-config.c
+   src/configs/gavgpool-config.c
+   src/configs/gavgpool-cw-config.c
+-  src/configs/gemm-config.c
+   src/configs/ibilinear-chw-config.c
+   src/configs/ibilinear-config.c
+   src/configs/lut32norm-config.c
+--- a/bazel/output_base/external/XNNPACK/BUILD.bazel	2024-01-16 11:48:24.000000000 +0530
++++ b/bazel/output_base/external/XNNPACK/BUILD.bazel	2025-11-30 17:51:01.940609790 +0530
+@@ -2759,7 +2759,6 @@ xnnpack_aggregate_library(
+         ":neonfp16_bench_microkernels",
+         ":neonfma_bench_microkernels",
+         ":neonv8_bench_microkernels",
+-        ":asm_microkernels",
+     ],
+     aarch64_deps = [
+         ":neon_bench_microkernels",
+@@ -2769,19 +2768,19 @@ xnnpack_aggregate_library(
+         ":asm_microkernels",
+     ],
+     defines = select({
+-        ":arm_fp16_scalar_enabled": ["XNN_ENABLE_ARM_FP16_SCALAR=1"],
++        ":arm_fp16_scalar_enabled": ["XNN_ENABLE_ARM_FP16_SCALAR=0"],
+         "//conditions:default": ["XNN_ENABLE_ARM_FP16_SCALAR=0"],
+     }) + select({
+-        ":arm_fp16_vector_enabled": ["XNN_ENABLE_ARM_FP16_VECTOR=1"],
++        ":arm_fp16_vector_enabled": ["XNN_ENABLE_ARM_FP16_VECTOR=0"],
+         "//conditions:default": ["XNN_ENABLE_ARM_FP16_VECTOR=0"],
+     }) + select({
+-        ":arm_bf16_enabled": ["XNN_ENABLE_ARM_BF16=1"],
++        ":arm_bf16_enabled": ["XNN_ENABLE_ARM_BF16=0"],
+         "//conditions:default": ["XNN_ENABLE_ARM_BF16=0"],
+     }) + select({
+-        ":arm_dotprod_enabled": ["XNN_ENABLE_ARM_DOTPROD=1"],
++        ":arm_dotprod_enabled": ["XNN_ENABLE_ARM_DOTPROD=0"],
+         "//conditions:default": ["XNN_ENABLE_ARM_DOTPROD=0"],
+     }) + select({
+-        ":arm_i8mm_enabled": ["XNN_ENABLE_ARM_I8MM=1"],
++        ":arm_i8mm_enabled": ["XNN_ENABLE_ARM_I8MM=0"],
+         "//conditions:default": ["XNN_ENABLE_ARM_I8MM=0"],
+     }) + select({
+         ":riscv_vector_enabled": ["XNN_ENABLE_RISCV_VECTOR=1"],
+@@ -2859,7 +2858,6 @@ xnnpack_aggregate_library(
+         ":neonfp16_prod_microkernels",
+         ":neonfma_prod_microkernels",
+         ":neonv8_prod_microkernels",
+-        ":asm_microkernels",
+     ],
+     aarch64_deps = [
+         ":neon_prod_microkernels",
+@@ -2951,7 +2949,6 @@ xnnpack_aggregate_library(
+         ":neonfp16_test_microkernels",
+         ":neonfma_test_microkernels",
+         ":neonv8_test_microkernels",
+-        ":asm_microkernels",
+     ],
+     aarch64_deps = [
+         ":neon_test_microkernels",
+@@ -3124,7 +3121,7 @@ xnnpack_cc_library(
+ cc_library(
+     name = "enable_assembly",
+     defines = select({
+-        ":assembly_enabled": ["XNN_ENABLE_ASSEMBLY=1"],
++        ":assembly_enabled": ["XNN_ENABLE_ASSEMBLY=0"],
+         "//conditions:default": ["XNN_ENABLE_ASSEMBLY=0"],
+     }),
+     visibility = xnnpack_visibility(),
+@@ -3167,7 +3164,7 @@ cc_library(
+ cc_library(
+     name = "enable_dwconv_multipass",
+     defines = select({
+-        ":dwconv_multipass_enabled": ["XNN_ENABLE_DWCONV_MULTIPASS=1"],
++        ":dwconv_multipass_enabled": ["XNN_ENABLE_DWCONV_MULTIPASS=0"],
+         "//conditions:default": ["XNN_ENABLE_DWCONV_MULTIPASS=0"],
+     }),
+ )

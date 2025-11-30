@@ -1,0 +1,29 @@
+From 7927d715ba16be332a521a59a92a37c6163dda7b Mon Sep 17 00:00:00 2001
+From: Hemanth Kumar <hemanth@alifsemi.com>
+Date: Mon, 1 Dec 2025 16:11:51 +0530
+Subject: [PATCH 2/5] python_repo.bzl: set correct python version available in
+ OE-core
+
+Upstream-Status: Inappropriate [oe specific]
+
+Signed-off-by: Hemanth Kumar <hemanth@alifsemi.com>
+---
+ tensorflow/tools/toolchains/python/python_repo.bzl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tensorflow/tools/toolchains/python/python_repo.bzl b/tensorflow/tools/toolchains/python/python_repo.bzl
+index 47fe64d7b7b..8c32db206fd 100644
+--- a/tensorflow/tools/toolchains/python/python_repo.bzl
++++ b/tensorflow/tools/toolchains/python/python_repo.bzl
+@@ -8,7 +8,7 @@ To set wheel name, add "--repo_env=WHEEL_NAME=tensorflow_cpu"
+ """
+
+ VERSIONS = ["3.9", "3.10", "3.11", "3.12"]
+-DEFAULT_VERSION = "3.11"
++DEFAULT_VERSION = "3.12"
+ WARNING = """
+ TF_PYTHON_VERSION environment variable was not set correctly; using Python {}.
+
+--
+2.43.0
+
