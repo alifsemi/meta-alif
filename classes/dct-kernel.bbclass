@@ -245,6 +245,8 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("DAC120_STATUS .*", "DAC120_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("DAC121_STATUS .*", "DAC121_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("CMP0_STATUS .*", "CMP0_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-ethosu', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("ETHOSU_NPU_STATUS .*", "ETHOSU_NPU_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
 }
 
 python do_choose_uart () {
