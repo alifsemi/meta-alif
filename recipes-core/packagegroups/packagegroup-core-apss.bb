@@ -44,6 +44,7 @@ busybox-udhcpc \
 base-passwd \
 flash-tool \
 hyperram-test \
+filesystem-test \
 helloworld \
 helloworld-daemon \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-debug', 'gdbserver', '', d)} \
