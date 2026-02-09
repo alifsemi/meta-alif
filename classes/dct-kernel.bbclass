@@ -173,6 +173,8 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("UTIMER0_STATUS .*", "UTIMER0_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains_any('DISTRO_FEATURES', ['apss-sd-share', 'apss-sd-boot'], True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("SDHCI_STATUS .*","SDHCI_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-usb-boot', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("HSUSB_STATUS .*", "HSUSB_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-dsi', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("DSI_STATUS .*", "DSI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-dpi', True, False, d):
