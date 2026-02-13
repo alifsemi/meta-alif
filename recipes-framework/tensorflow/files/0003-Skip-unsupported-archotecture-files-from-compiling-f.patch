@@ -1,0 +1,61 @@
+From a553f8cc53800d190ea70465af1936a879da9620 Mon Sep 17 00:00:00 2001
+From: Hemanth Kumar <hemanth@alifsemi.com>
+Date: Mon, 1 Dec 2025 16:20:24 +0530
+Subject: [PATCH 3/5] Skip unsupported archotecture files from compiling for
+ Cortex-A32
+
+Upstream-Status: Inappropriate [oe specific]
+
+Signed-off-by: Hemanth Kumar <hemanth@alifsemi.com>
+---
+ tensorflow/lite/kernels/internal/BUILD | 20 --------------------
+ 1 file changed, 20 deletions(-)
+
+diff --git a/tensorflow/lite/kernels/internal/BUILD b/tensorflow/lite/kernels/internal/BUILD
+index 1bbf1516f82..610fef3ac67 100644
+--- a/tensorflow/lite/kernels/internal/BUILD
++++ b/tensorflow/lite/kernels/internal/BUILD
+@@ -456,15 +456,6 @@ selects.config_setting_group(
+ cc_library(
+     name = "optimized_4bit",
+     srcs = select({
+-        ":x86_64_any": [
+-            "optimized/4bit/sse_fully_connected.cc",
+-        ],
+-        ":aarch64_any": [
+-            "optimized/4bit/neon_fully_connected.cc",
+-            "optimized/4bit/neon_fully_connected_aarch64_nosdot.cc",
+-            "optimized/4bit/neon_fully_connected_aarch64_sdot.cc",
+-            "optimized/4bit/neon_fully_connected_impl.h",
+-        ],
+         ":arm32_any": [
+             "optimized/4bit/neon_fully_connected.cc",
+             "optimized/4bit/neon_fully_connected_arm32.cc",
+@@ -480,13 +471,6 @@ cc_library(
+         "optimized/4bit/fully_connected_reference.h",
+         "optimized/fully_connected_4bit.h",
+     ] + select({
+-        ":x86_64_any": [
+-            "optimized/4bit/sse_fully_connected.h",
+-            "optimized/4bit/sse_fully_connected_impl.h",
+-        ],
+-        ":aarch64_any": [
+-            "optimized/4bit/neon_fully_connected.h",
+-        ],
+         ":arm32_any": [
+             "optimized/4bit/neon_fully_connected.h",
+         ],
+@@ -495,10 +479,6 @@ cc_library(
+     compatible_with = get_compatible_with_portable(),
+     copts = tflite_copts() + NEON_FLAGS_IF_APPLICABLE,
+     defines = select({
+-        ":x86_64_any": ["FC_4BIT_SSE"],
+-        ":aarch64_any": [
+-            "FC_4BIT_NEON",
+-        ],
+         ":arm32_any": [
+             "FC_4BIT_NEON",
+         ],
+--
+2.43.0
+

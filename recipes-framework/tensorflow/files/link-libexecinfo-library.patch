@@ -1,0 +1,15 @@
+Link libexecinfo library in order to build libtensorflowliate.so
+
+Upstream-Status: Inappropriate [oe specific]
+
+Signed-off-by: Hemanth Kumar <hemanth@alifsemi.com>
+--- a/cc_config.bzl.tpl.orig	2025-11-30 11:50:27.929807878 +0530
++++ b/cc_config.bzl.tpl	2025-11-30 13:38:09.677013006 +0530
+@@ -262,6 +262,7 @@ def _impl(ctx):
+                     flag_group(
+                         flags = [
+                             "-lstdc++",
++                            "-lexecinfo",
+                             "-Wl,-z,relro,-z,now",
+                             "-no-canonical-prefixes",
+                             "-pass-exit-codes",
