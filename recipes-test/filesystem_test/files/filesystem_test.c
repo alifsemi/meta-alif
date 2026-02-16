@@ -20,11 +20,17 @@ int main() {
   printf("This test will write text to a file in %s.\nThen the test will read "
          "the file and compare content.\n\n",
          test_file);
-  FILE *fp = fopen(test_file, "w+");
+  FILE *fp = fopen(test_file, "w");
   if (fp) {
     fprintf(fp, "%s", test_text);
-    fflush(fp);
-    fseek(fp, 0, SEEK_SET);
+    fclose(fp);
+
+    // Reopen the file in read-only mode to verify persistence
+    fp = fopen(test_file, "r");
+    if (!fp) {
+      printf("Failed to reopen file %s for reading.\n", test_file);
+      return 1;
+    }
 
     char buffer[128];
     if (fgets(buffer, sizeof(buffer), fp)) {
@@ -44,7 +50,7 @@ int main() {
       return 1;
     }
   } else {
-    printf("Failed to open file /var/volatile/testfile.txt for writing.\n");
+    printf("Failed to open file %s for writing.\n", test_file);
     return 1;
   }
 }

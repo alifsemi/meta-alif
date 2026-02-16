@@ -6,18 +6,16 @@
 # License Agreement with this file. If not, please write to:
 # contact@alifsemi.com, or visit: https://alifsemi.com/license
 
-LICENSE="MIT"
-LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
+LICENSE = "CLOSED"
 PR = "r0"
 
 SRC_URI = "file://filesystem_test.c"
 PV = "1.0"
 S = "${WORKDIR}"
-LDFLAGS = ""
 do_configure[noexec] = "1"
 
 do_compile(){
-    ${CC} filesystem_test.c -o filesystem_test
+    ${CC} ${CFLAGS} ${LDFLAGS} ${CPPFLAGS} filesystem_test.c -o filesystem_test
 }
 
 do_install() {
