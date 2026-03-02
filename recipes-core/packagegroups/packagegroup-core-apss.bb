@@ -8,7 +8,7 @@
 
 SUMMARY = "Minimal boot requirements for the APSS"
 DESCRIPTION = "The set of packages required to boot the APSS"
-PR = "r10"
+PR = "r11"
 
 inherit packagegroup
 
@@ -54,6 +54,7 @@ ${@bb.utils.contains('DISTRO_FEATURES', 'apss-hwsem', '${HWSEM_PACKAGES}', '', d
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-crc', '${CRC_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-pdm', '${PDM_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-utimer', '${UTIMER_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-cpufreq', '${CPUFREQ_PACKAGES}', '', d)} \
 "
 
 SD_PACKAGES = " util-linux-fdisk \
@@ -104,6 +105,11 @@ a32-linux-dd-testcases-utimer \
 
 PDM_PACKAGES = " \
 alsa-utils-aplay \
+"
+
+CPUFREQ_PACKAGES =  " \
+a32-linux-dd-testcases-cpufreq \
+cpufrequtils \
 "
 
 RDEPENDS:packagegroup-core-apss-graphics = " \
