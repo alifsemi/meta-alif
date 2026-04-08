@@ -173,6 +173,8 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("UTIMER0_STATUS .*", "UTIMER0_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains_any('DISTRO_FEATURES', ['apss-sd-share', 'apss-sd-boot'], True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("SDHCI_STATUS .*","SDHCI_STATUS \"okay\"",ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-usb-boot', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("HSUSB_STATUS .*", "HSUSB_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-dsi', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("DSI_STATUS .*", "DSI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-dpi', True, False, d):
@@ -215,7 +217,11 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("CMP(.*)_STATUS .*", "CMP\\1_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("PDM_STATUS .*", "PDM_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-i2s', True, False, d):
-        ker_dts_macro_file_write.write_text(re.sub("I2S3_STATUS .*", "I2S3_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        machine = d.getVar('MACHINE') or ""
+        if machine.startswith('appkit-e'):
+            ker_dts_macro_file_write.write_text(re.sub("I2S2_STATUS .*", "I2S2_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        elif machine.startswith('devkit-e'):
+            ker_dts_macro_file_write.write_text(re.sub("I2S3_STATUS .*", "I2S3_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("I2C1_STATUS .*", "I2C1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-i2c', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("I2C0_STATUS .*", "I2C0_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
@@ -245,6 +251,8 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("DAC120_STATUS .*", "DAC120_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("DAC121_STATUS .*", "DAC121_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("CMP0_STATUS .*", "CMP0_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-ethosu', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("ETHOSU_NPU_STATUS .*", "ETHOSU_NPU_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
 }
 
 python do_choose_uart () {
@@ -263,8 +271,18 @@ python do_choose_uart () {
         ker_dts_macro_file_write.write_text(re.sub("UART2_STATUS .*", "UART2_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
 }
 
+python do_disable_smp () {
+    import re
+    from pathlib import Path
+    ker_dts_macro_file = d.getVar("S") + d.getVar("DTS_MACRO_FILE") or ""
+    ker_dts_macro_file_write = Path(ker_dts_macro_file)
+    if bb.utils.contains('SMP', '0', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("CPU1_STATUS .*", "CPU1_STATUS \"disabled\"", ker_dts_macro_file_write.read_text()))
+}
+
 addtask dct_to_dts after do_configure before do_compile
 addtask choose_uart after do_configure before do_compile
+addtask disable_smp after do_configure before do_compile
 
 def get_dct_json_checksum_file(d):
     dct_json_file = d.getVar("DCT_JSON_FILE") or ""

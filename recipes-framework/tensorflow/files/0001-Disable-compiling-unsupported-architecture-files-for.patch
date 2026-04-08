@@ -1,0 +1,46 @@
+From 2d15fbcbb58749a60534a3d0363325cdb6d4bac5 Mon Sep 17 00:00:00 2001
+From: Hemanth Kumar <hemanth@alifsemi.com>
+Date: Mon, 1 Dec 2025 16:02:52 +0530
+Subject: [PATCH 1/5] Disable compiling unsupported architecture files for
+ Cortex-A32
+
+1. The bazel/output_base/external/XNNPACK directory gets populated during the
+build hence there is no way to apply the
+disable_compiling_unsupported_arch_files_for_cortexa32.patch before the build.
+So apply it after the build fails.
+
+2. Set correct size of long as 4.
+
+Upstream-Status: Inappropriate [oe specific]
+
+Signed-off-by: Hemanth Kumar <hemanth@alifsemi.com>
+---
+ .../pip_package/build_pip_package_with_bazel.sh      | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh b/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh
+index 5fbaed56c28..325a2002bc9 100755
+--- a/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh
++++ b/tensorflow/lite/tools/pip_package/build_pip_package_with_bazel.sh
+@@ -102,6 +102,18 @@ case "${TENSORFLOW_TARGET}" in
+     ;;
+ esac
+
++sed -i "s:#define SIZEOF_LONG 8:#define SIZEOF_LONG 4:g" ${TENSORFLOW_DIR}/.././bazel/output_base/external/python_x86_64-unknown-linux-gnu/include/*/pyconfig.h
++
++bazel ${BAZEL_STARTUP_OPTIONS} build -c opt -s --config=monolithic --config=noaws --config=nogcp --config=nohdfs --config=nonccl \
++  ${BAZEL_FLAGS} ${CUSTOM_BAZEL_FLAGS} //tensorflow/lite/python/interpreter_wrapper:_pywrap_tensorflow_interpreter_wrapper || true
++
++if [ ! -e ${TENSORFLOW_DIR}/../bazel/output_base/external/XNNPACK/.done ] ; then
++    pushd ${TENSORFLOW_DIR}/..
++    patch -p1 < disable_compiling_unsupported_arch_files_for_cortexa32.patch
++    touch ${TENSORFLOW_DIR}/../bazel/output_base/external/XNNPACK/.done
++    popd
++fi
++
+ bazel ${BAZEL_STARTUP_OPTIONS} build -c opt -s --config=monolithic --config=noaws --config=nogcp --config=nohdfs --config=nonccl \
+   ${BAZEL_FLAGS} ${CUSTOM_BAZEL_FLAGS} //tensorflow/lite/python/interpreter_wrapper:_pywrap_tensorflow_interpreter_wrapper
+ cp "${TENSORFLOW_DIR}/bazel-bin/tensorflow/lite/python/interpreter_wrapper/_pywrap_tensorflow_interpreter_wrapper${LIBRARY_EXTENSION}" \
+--
+2.43.0
+
