@@ -42,10 +42,11 @@ packagegroup-core-boot \
 busybox-udhcpd \
 busybox-udhcpc \
 base-passwd \
+filesystem-test \
 flash-tool \
-hyperram-test \
 helloworld \
 helloworld-daemon \
+hyperram-test \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-debug', 'gdbserver', '', d)} \
 ${@bb.utils.contains_any('DISTRO_FEATURES', ['apss-sd-boot', 'apss-usb-boot'], '${SD_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200', '${CDC200_PACKAGES}', '', d)} \
