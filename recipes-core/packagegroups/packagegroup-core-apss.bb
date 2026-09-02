@@ -113,12 +113,33 @@ a32-linux-dd-testcases-cpufreq \
 cpufrequtils \
 "
 
+WIFI_PACKAGES = " \
+    kmod \
+    wpa-supplicant \
+    iw \
+    usbutils \
+    wireless-regdb-static \
+    linux-firmware-ralink \
+    iputils-ping \
+    kernel-module-cfg80211 \
+    kernel-module-mac80211 \
+    kernel-module-libarc4 \
+    kernel-module-rt2x00lib \
+    kernel-module-rt2x00usb \
+    kernel-module-rt2800lib \
+    kernel-module-rt2800usb \
+"
+
 RDEPENDS:packagegroup-core-apss-graphics = " \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-graphics', '${GRAPHICS_PACKAGES} ${AV_PACKAGES}', '', d)} \
 "
 
 RDEPENDS:packagegroup-core-apss-pdm = " \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-pdm', '${PDM_PACKAGES}', '', d)} \
+"
+
+RDEPENDS:packagegroup-core-apss-base += " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'apss-wifi', '${WIFI_PACKAGES}', '', d)} \
 "
 
 IOT_PACKAGES = " \
