@@ -8,7 +8,7 @@
 
 SUMMARY = "Minimal boot requirements for the APSS"
 DESCRIPTION = "The set of packages required to boot the APSS"
-PR = "r11"
+PR = "r12"
 
 inherit packagegroup
 
@@ -79,7 +79,6 @@ GRAPHICS_PACKAGES = " \
 
 CDC200_PACKAGES = " \
 	a32-linux-dd-testcases-cdc200 \
-	lv-port-linux-frame-buffer \
 "
 
 HWSEM_PACKAGES = " \
