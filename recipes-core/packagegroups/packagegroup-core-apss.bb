@@ -8,7 +8,7 @@
 
 SUMMARY = "Minimal boot requirements for the APSS"
 DESCRIPTION = "The set of packages required to boot the APSS"
-PR = "r13"
+PR = "r14"
 
 inherit packagegroup
 
@@ -51,6 +51,7 @@ ${@bb.utils.contains('DISTRO_FEATURES', 'apss-debug', 'gdbserver', '', d)} \
 ${@bb.utils.contains_any('DISTRO_FEATURES', ['apss-sd-boot', 'apss-usb-boot'], '${SD_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200', '${CDC200_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-mipidsi', '${CDC200_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-d2d', '${GRAPHICS_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-mhu', '${MHU_WDOG_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-hwsem', '${HWSEM_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-crc', '${CRC_PACKAGES}', '', d)} \
@@ -66,16 +67,6 @@ SD_PACKAGES = " util-linux-fdisk \
 
 GRAPHICS_PACKAGES = " \
 	libdrm \
-	libdrm-tests \
-	devmem2 \
-	e2fsprogs-resize2fs \
-	rsync \
-	haveged \
-	smartwatch-demo \
-	cdc-mod \
-	d2d-mod \
-	kmod \
-	fbset \
 "
 
 CDC200_PACKAGES = " \
