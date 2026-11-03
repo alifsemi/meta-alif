@@ -190,6 +190,8 @@ python do_dct_to_dts () {
     if bb.utils.contains('DISTRO_FEATURES', 'apss-cdc200', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("CDC200_PARALLEL .*", "CDC200_PARALLEL 1", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("CDC200_STATUS .*", "CDC200_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-d2d', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("DAVE_2D_STATUS.*", "DAVE_2D_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-touch', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("I2C1_STATUS .*", "I2C1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-cpi', True, False, d):
