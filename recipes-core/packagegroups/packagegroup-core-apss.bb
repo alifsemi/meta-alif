@@ -8,7 +8,7 @@
 
 SUMMARY = "Minimal boot requirements for the APSS"
 DESCRIPTION = "The set of packages required to boot the APSS"
-PR = "r15"
+PR = "r16"
 
 # Dependencies vary with DISTRO_FEATURES, so this must be set before
 # inherit packagegroup. Otherwise the class snapshots PACKAGE_ARCH as
@@ -62,6 +62,7 @@ ${@bb.utils.contains('DISTRO_FEATURES', 'apss-crc', '${CRC_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-pdm', '${PDM_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-utimer', '${UTIMER_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-cpufreq', '${CPUFREQ_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-isp', '${ISP_PACKAGES}', '', d)} \
 "
 
 SD_PACKAGES = " util-linux-fdisk \
@@ -106,6 +107,14 @@ alsa-utils-aplay \
 CPUFREQ_PACKAGES =  " \
 a32-linux-dd-testcases-cpufreq \
 cpufrequtils \
+"
+
+# media-ctl is split out of v4l-utils. v4l2-ctl stays in v4l-utils.
+# libcamera ships cam and the rkisp1 IPA.
+ISP_PACKAGES = " \
+libcamera \
+v4l-utils \
+media-ctl \
 "
 
 WIFI_PACKAGES = " \

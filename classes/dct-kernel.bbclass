@@ -183,6 +183,8 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("CSI_STATUS .*", "CSI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("I2C1_STATUS .*", "I2C1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("CPI_STATUS .*", "CPI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-isp', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("ISP_STATUS .*", "ISP_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-mipidsi', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("CDC200_PARALLEL .*", "CDC200_PARALLEL 0", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("DSI_STATUS .*", "DSI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
