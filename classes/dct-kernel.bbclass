@@ -180,11 +180,16 @@ python do_dct_to_dts () {
     if bb.utils.contains('DISTRO_FEATURES', 'apss-dpi', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("DPI_STATUS .*", "DPI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-mipicsi', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("CPI_PARALLEL .*", "CPI_PARALLEL 0", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("CSI_STATUS .*", "CSI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("I2C1_STATUS .*", "I2C1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("CPI_STATUS .*", "CPI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-isp', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("ISP_STATUS .*", "ISP_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+    if bb.utils.contains('DISTRO_FEATURES', 'apss-parallel-camera', True, False, d):
+        ker_dts_macro_file_write.write_text(re.sub("CPI_PARALLEL .*", "CPI_PARALLEL 1", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("I2C1_STATUS .*", "I2C1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+        ker_dts_macro_file_write.write_text(re.sub("CPI_STATUS .*", "CPI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-mipidsi', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("CDC200_PARALLEL .*", "CDC200_PARALLEL 0", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("DSI_STATUS .*", "DSI_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
@@ -232,7 +237,8 @@ python do_dct_to_dts () {
         if machine.startswith('appkit-e'):
             ker_dts_macro_file_write.write_text(re.sub("I2S2_STATUS .*", "I2S2_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         elif machine.startswith('devkit-e'):
-            ker_dts_macro_file_write.write_text(re.sub("I2S3_STATUS .*", "I2S3_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+            if not bb.utils.contains('DISTRO_FEATURES', 'apss-parallel-camera', True, False, d):
+                ker_dts_macro_file_write.write_text(re.sub("I2S3_STATUS .*", "I2S3_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
         ker_dts_macro_file_write.write_text(re.sub("I2C1_STATUS .*", "I2C1_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-i2c', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("I2C0_STATUS .*", "I2C0_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
