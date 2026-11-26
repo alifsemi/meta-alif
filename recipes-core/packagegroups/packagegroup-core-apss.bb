@@ -8,7 +8,7 @@
 
 SUMMARY = "Minimal boot requirements for the APSS"
 DESCRIPTION = "The set of packages required to boot the APSS"
-PR = "r16"
+PR = "r17"
 
 # Dependencies vary with DISTRO_FEATURES, so this must be set before
 # inherit packagegroup. Otherwise the class snapshots PACKAGE_ARCH as
@@ -63,6 +63,7 @@ ${@bb.utils.contains('DISTRO_FEATURES', 'apss-pdm', '${PDM_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-utimer', '${UTIMER_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-cpufreq', '${CPUFREQ_PACKAGES}', '', d)} \
 ${@bb.utils.contains('DISTRO_FEATURES', 'apss-isp', '${ISP_PACKAGES}', '', d)} \
+${@bb.utils.contains('DISTRO_FEATURES', 'apss-spi', '${SPI_DMA_PACKAGES}', '', d)} \
 "
 
 SD_PACKAGES = " util-linux-fdisk \
@@ -132,6 +133,10 @@ WIFI_PACKAGES = " \
     kernel-module-rt2x00usb \
     kernel-module-rt2800lib \
     kernel-module-rt2800usb \
+"
+
+SPI_DMA_PACKAGES = " \
+a32-linux-dd-testcases-spi-dma \
 "
 
 RDEPENDS:packagegroup-core-apss-graphics = " \

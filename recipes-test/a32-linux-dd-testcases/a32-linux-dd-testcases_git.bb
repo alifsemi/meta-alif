@@ -12,7 +12,7 @@ Linux device drivers, which verified basic functionality of Linux \
 device drivers."
 LICENSE="Alif"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=e5c68df4a3ef4a551f3229bfb6905840"
-PR = "r15"
+PR = "r16"
 SRC_URI = "${LINUX_DD_TC_TREE};branch=${LINUX_DD_TC_BRANCH}"
 SRCREV = "${AUTOREV}"
 PV = "1.0+git${SRCPV}"
@@ -29,7 +29,7 @@ do_install() {
     oe_runmake DESTDIR="${D}" TARGET=install
 }
 
-PACKAGES =. "${PN}-cdc200 ${PN}-hwsem ${PN}-watchdog ${PN}-mhu ${PN}-crc ${PN}-utimer ${PN}-cpufreq libmhuservices libmhuservices-dev "
+PACKAGES =. "${PN}-cdc200 ${PN}-hwsem ${PN}-watchdog ${PN}-mhu ${PN}-crc ${PN}-utimer ${PN}-cpufreq libmhuservices libmhuservices-dev ${PN}-spi-dma "
 FILES:${PN}-cdc200 = "/opt/linux_dd_test/cdc200"
 FILES:${PN}-hwsem = "/opt/linux_dd_test/hwsem"
 FILES:${PN}-watchdog = "/opt/linux_dd_test/watchdog"
@@ -40,3 +40,4 @@ FILES:${PN}-cpufreq = "/opt/linux_dd_test/cpufreq/cpu_benchmark /opt/linux_dd_te
 FILES:libmhuservices = "${libdir}/libservices.so.*"
 FILES:libmhuservices-dev = "${libdir}/libservices.so"
 FILES:${PN} = "/opt/linux_dd_test/mhu/pthread* /opt/linux_dd_test/mhu/test*"
+FILES:${PN}-spi-dma = "/opt/linux_dd_test/spi_dma"
