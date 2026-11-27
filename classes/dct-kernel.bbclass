@@ -273,6 +273,26 @@ python do_dct_to_dts () {
         ker_dts_macro_file_write.write_text(re.sub("ETHOSU_NPU_STATUS .*", "ETHOSU_NPU_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
     if bb.utils.contains('DISTRO_FEATURES', 'apss-cpufreq', True, False, d):
         ker_dts_macro_file_write.write_text(re.sub("CPUFREQ_STATUS .*", "CPUFREQ_STATUS \"okay\"", ker_dts_macro_file_write.read_text()))
+    # MIPI CSI and CPI both take the sensor named by CAMERA_SENSOR.
+    # serial_camera.dtsi includes ENSEMBLE_CAMERA_SENSOR_DTSI.
+    sensor = (d.getVar('CAMERA_SENSOR') or '').strip().lower()
+    if sensor:
+        if not re.fullmatch(r"[a-z0-9]+", sensor):
+            bb.fatal("CAMERA_SENSOR '%s' is not a sensor name. Set it in local.conf." % sensor)
+        dtsi_rel = "camera/%s.dtsi" % sensor
+        dtsi_path = path.join(path.dirname(ker_dts_macro_file), dtsi_rel)
+        if not path.isfile(dtsi_path):
+            bb.fatal("CAMERA_SENSOR '%s' has no device tree fragment %s" % (sensor, dtsi_path))
+        text = ker_dts_macro_file_write.read_text()
+        new_text, count = re.subn(
+            r'(?m)^#define ENSEMBLE_CAMERA_SENSOR_DTSI\s+.*',
+            '#define ENSEMBLE_CAMERA_SENSOR_DTSI "%s"' % dtsi_rel,
+            text,
+            count=1,
+        )
+        if count != 1:
+            bb.fatal("Could not set ENSEMBLE_CAMERA_SENSOR_DTSI in %s" % ker_dts_macro_file)
+        ker_dts_macro_file_write.write_text(new_text)
 }
 
 python do_choose_uart () {
